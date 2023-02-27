@@ -3,7 +3,6 @@ const Sequelize = require('sequelize')
 const sequelize =  new Sequelize('bd_projeto_etec',process.env.DATABASE_USERNAME,process.env.DATABASE_PASSWORD,{
   host:process.env.DATABASE_HOST,
   dialect:"mysql",
-  dialectModule:"mysql2",
   dialectOptions:{
     ssl:{
       rejectUnauthorized: true
