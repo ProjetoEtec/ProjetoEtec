@@ -17,7 +17,7 @@ const cliente = require('./routes/cliente')
 // rotas
 app.use('/cliente',cliente)
 app.get('/', (req, res) => {
-    res.render('index.ejs');
+    res.render('./views/index.ejs');
 })
 
 
