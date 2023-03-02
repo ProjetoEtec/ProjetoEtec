@@ -12,10 +12,10 @@ router.get('/cadastro', (req, res) =>{
 
 router.post('/cadastro/add',(req,res)=>{
   Cliente.create({
-    nome: req.body.nomeCompleto,
+    nome: req.body.nome,
     cpf: req.body.cpf,
     telefone: req.body.telefone,
-    data_nasc: req.body.dataNasc
+    data_nasc: req.body.nascimento,
   }).then(()=>{
     res.send("usuario criado com sucesso")
   }).catch((err)=>{
