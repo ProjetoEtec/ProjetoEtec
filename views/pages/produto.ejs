@@ -1,0 +1,26 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<div class="card mt-5 ">
+	<!-- 
+		RESPONSIVO PRECISA SER RESPONSIVO -- APRENDER 
+		COLOCAR O NOME DO PRODUTO EM BAIXO DA FOTO NO MOBILE
+	-->
+	<div class=" p-5 d-flex flex-row">
+		<div>
+			<img src="img/gin.jpg" class="img-fluid" alt="...">
+		</div>
+		<div class="ms-5 w-75">
+			<!-- nome do produto com o banco -->
+			<h2>Gin rocks com bali de melancia</h2>
+			<!-- descricao do produto com o banco -->
+			<p class="text-break">Gin Rocks Melancia é uma bebida alcoólica refrescante e aromática que combina gin, suco natural de melancia e botânicos selecionados. Com cor vibrante e sabor frutado, é servido com gelo e água tônica ou soda. O zimbro, cardamomo e coentro adicionam notas de especiarias e completam essa deliciosa opção de drinque.</p>
+			<h2>R$ 99,99</h2>
+			<label for="quantidade">Quantidade:</label>
+			<input type="number" name="quantidade" class="form-control w-25" value="0">
+			<button class="btn btn-success">Adicionar ao carrinho</button>
+		</div>
+	</div>
+</div>
+
+<%- include('../partials/footer') %>

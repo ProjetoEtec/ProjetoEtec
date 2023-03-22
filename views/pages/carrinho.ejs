@@ -1,0 +1,94 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<h2 class="mt-5 mb-5">Meu carrinho</h2>
+<!-- Banco de dados -->
+<div class="card container">
+ <h2 class="mt-4">Produtos</h2>
+ <form action="post">
+  <div class="card-body container">
+   <div class="card">
+    <h3 class="ms-4 mt-4">Loja 1</h3>
+    <!-- Produtos -->
+    <div class="m-4 d-flex">
+     <div class="w-25">
+      <img src="/img/gin.jpg" alt="" class="w-100">
+     </div>
+     <div class="ms-4">
+      <p class="h-75">$Nome do produto$</p>
+      <div class="mt-4">
+       <label for="qtd">Quantidade: </label>
+       <input type="text" name="qtd">
+       <label for="preco">Preço: </label>
+       <input type="text" name="preco">
+      </div>
+     </div>
+    </div>
+
+    <div class="m-4 d-flex">
+     <div class="w-25">
+      <img src="/img/gin.jpg" alt="" class="w-100">
+     </div>
+     <div class="ms-4">
+      <p class="h-75">$Nome do produto$</p>
+      <div class="mt-4">
+       <label for="qtd">Quantidade: </label>
+       <input type="text" name="qtd">
+       <label for="preco">Preço: </label>
+       <input type="text" name="preco">
+      </div>
+     </div>
+    </div>
+
+    <p class="ms-4 fs-4">Preço: 99.99</p>
+   </div>
+
+   <!-- asdsd -->
+   <div class="card mt-4">
+    <h3 class="ms-4 mt-4">Loja 2</h3>
+    <!-- Produtos -->
+    <div class="m-4 d-flex">
+     <div class="w-25">
+      <img src="/img/gin.jpg" alt="" class="w-100">
+     </div>
+     <div class="ms-4">
+      <p class="h-75">$Nome do produto$</p>
+      <div class="mt-4">
+       <label for="qtd">Quantidade: </label>
+       <input type="text" name="qtd">
+       <label for="preco">Preço: </label>
+       <input type="text" name="preco">
+      </div>
+     </div>
+    </div>
+
+    <div class="m-4 d-flex">
+     <div class="w-25">
+      <img src="/img/gin.jpg" alt="" class="w-100">
+     </div>
+     <div class="ms-4">
+      <p class="h-75">$Nome do produto$</p>
+      <div class="mt-4">
+       <label for="qtd">Quantidade: </label>
+       <input type="text" name="qtd">
+       <label for="preco">Preço: </label>
+       <input type="text" name="preco">
+      </div>
+     </div>
+    </div>
+
+    <p class="ms-4 fs-4">Preço: 99.99</p>
+   </div>
+   <div class="mt-4 d-flex justify-content-between">
+    <p class="fs-3">Total do Pedido: 199.98</p>
+    <div class="d-flex">
+     <p class="me-3">Deseja excluir o pedido?</p>
+     <button class="btn btn-danger">Excluir</button>
+    </div>  
+   </div>
+   <button class="btn btn-success mt-5 btn-lg  d-grid gap-2 col-3 mx-auto" type="submit">Efetuar Pedido</button>
+  </div>
+ </form>
+</div>
+
+<%- include('../partials/footer') %>

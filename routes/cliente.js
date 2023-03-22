@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Cliente = require('../models/cliente')
+//const Cliente = require('../models/cliente')
 
 router.get('/',(req,res)=>{
   res.send('teste')
@@ -11,11 +11,14 @@ router.get('/cadastro', (req, res) =>{
 })
 
 router.post('/cadastro/add',(req,res)=>{
+  // fazer validação de dados
   Cliente.create({
     nome: req.body.nomeCompleto,
     cpf: req.body.cpf,
     telefone: req.body.telefone,
-    data_nasc: req.body.dataNasc
+    nascimento: req.body.nascimento,
+    email:req.body.email,
+    senha:req.body.senha,
   }).then(()=>{
     res.send("usuario criado com sucesso")
   }).catch((err)=>{

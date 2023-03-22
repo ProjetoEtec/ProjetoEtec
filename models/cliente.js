@@ -18,6 +18,10 @@ const Cliente = db.sequelize.define("clientes", {
   },
   numero_casa:{
     type:db.Sequelize.STRING
+  },email:{
+    type:db.Sequelize.STRING
+  },senha:{
+    type:db.Sequelize.STRING
   }
 })
 

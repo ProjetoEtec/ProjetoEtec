@@ -1,0 +1,22 @@
+:root {
+ --cor-principal: #FFFFFF;
+ --cor-destaque:#ff5825;
+ --cor-secundaria: #011627;
+}
+
+.branco{
+ background: var(--cor-principal);
+}
+.cor-destaque{
+ background-color: var(--cor-destaque);
+}
+.cor-secundaria{
+ background-color:var(--cor-secundaria);
+}
+
+a,h1,h2{
+ font-family: 'Poppins', sans-serif;
+}
+.fonte-texto{
+ font-family: 'Roboto', sans-serif;
+}
