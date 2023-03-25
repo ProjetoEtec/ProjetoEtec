@@ -33,4 +33,8 @@ router.get('/update/:id', (req, res) => {
   res.render('cliente/minhaconta');
 })
 
+router.get('/finalizar-pedido',(req,res)=>{
+  res.render('cliente/finalizarpedido');
+})
+
 module.exports = router

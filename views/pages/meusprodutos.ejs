@@ -1,19 +1,50 @@
-<%- include('../partials/head') %>
+<%- include('../partials/head') %> 
 <%- include('../partials/header') %>
 
-<h2 class="mt-5">meus Produtos</h2>
+<h2 class="mt-5">Meus produtos</h2>
 
-
-
-<a href="/produto" class="text-light text-decoration-none">
-    <div class="card text-bg-primary" style="width: 18rem;">
-      <img src="/img/gin.jpg" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Produto 1</h5>
-        <p class="card-text">Descrição sobre o produto.</p>
-        <a href="#" class="btn btn-primary">Comprar</a>
-      </div>
+<div class="container">
+    <div class="row row-cols-auto">
+        <div class="card col-6 col-md-3">
+            <a href="/produto" class="text-decoration-none text-dark">
+                <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
+                <div class="card-body">
+                    <h5>Produto 1</h5>
+                    <p>Descrição sobre o produto.</p>
+                    <button class="btn btn-success">Ver mais</button>
+                </div>
+            </a>
+        </div>
+        <div class="card col-6 col-md-3">
+            <a href="/produto" class="text-decoration-none text-dark">
+                <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
+                <div class="card-body">
+                    <h5>Produto 1</h5>
+                    <p>Descrição sobre o produto.</p>
+                    <button class="btn btn-success">Ver mais</button>
+                </div>
+            </a>
+        </div>
+        <div class="card col-6 col-md-3">
+            <a href="/produto" class="text-decoration-none text-dark">
+                <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
+                <div class="card-body">
+                    <h5>Produto 1</h5>
+                    <p>Descrição sobre o produto.</p>
+                    <button class="btn btn-success">Ver mais</button>
+                </div>
+            </a>
+        </div>
+        <div class="card col-6 col-md-3">
+            <a href="/produto" class="text-decoration-none text-dark">
+                <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
+                <div class="card-body">
+                    <h5>Produto 1</h5>
+                    <p>Descrição sobre o produto.</p>
+                    <button class="btn btn-success">Ver mais</button>
+                </div>
+            </a>
+        </div>
     </div>
-  </a>
-
+</div>
 <%- include('../partials/footer') %>

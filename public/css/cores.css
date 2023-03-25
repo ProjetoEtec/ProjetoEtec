@@ -14,9 +14,9 @@
  background-color:var(--cor-secundaria);
 }
 
-a,h1,h2{
+a,h1,h2,h3,h4,h5,h6{
  font-family: 'Poppins', sans-serif;
 }
-.fonte-texto{
+p,label,button,small{
  font-family: 'Roboto', sans-serif;
 }

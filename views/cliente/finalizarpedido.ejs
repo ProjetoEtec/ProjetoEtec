@@ -1,0 +1,25 @@
+<%- include('../partials/head') %> <%- include('../partials/header') %>
+
+<div class="card mt-5">
+  <div class="card-body">
+    <h2 class="mt-2">Finalizar Pedido</h2>
+    <div class="mt-3">
+      <label for="email">E-mail:</label>
+      <input type="email" name="email" class="form-control"/>
+      <small>Digite seu e-mail :</small>
+    </div>
+    <div class="mt-3">
+      <label for="senha">Senha:</label>
+      <input type="text" name="senha" class="form-control"/>
+      <small> Digite a senha:</small>
+    </div>
+    <div class="mt-3">
+      <label for="endereco">Endereço:</label>
+      <input type="text" name="endereco" class="form-control"/>
+      <small>Coloque o endereço que você deseja para entregar:</small>
+    </div>
+    <button class="btn btn-success mt-3">Efetuar pedido</button>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

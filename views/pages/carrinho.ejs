@@ -1,94 +1,68 @@
-<%- include('../partials/head') %>
+<%- include('../partials/head') %> 
 <%- include('../partials/header') %>
 
 <h2 class="mt-5 mb-5">Meu carrinho</h2>
 <!-- Banco de dados -->
 <div class="card container">
- <h2 class="mt-4">Produtos</h2>
- <form action="post">
-  <div class="card-body container">
-   <div class="card">
-    <h3 class="ms-4 mt-4">Loja 1</h3>
-    <!-- Produtos -->
-    <div class="m-4 d-flex">
-     <div class="w-25">
-      <img src="/img/gin.jpg" alt="" class="w-100">
-     </div>
-     <div class="ms-4">
-      <p class="h-75">$Nome do produto$</p>
-      <div class="mt-4">
-       <label for="qtd">Quantidade: </label>
-       <input type="text" name="qtd">
-       <label for="preco">Preço: </label>
-       <input type="text" name="preco">
+  <h2 class="mt-4">Produtos</h2>
+  <form action="post" >
+    <div class="card mt-4">
+      <h3 class="ms-4 mt-4">Loja 1</h3>
+
+      <!-- Produtos -->
+      <div class="m-2 m-md-4 row">
+        <div class="col-md-4">
+          <img src="/img/gin.jpg" alt="" class="img-fluid" />
+        </div>
+        <div class="col-md-8">
+          <h3>$Nome do produto$</h3>
+          <div class="mt-4 d-flex-md">
+            <label for="qtd">Quantidade: </label>
+            <input type="text" name="qtd" class="w-50 form-control" />
+            <label for="preco">Preço: </label>
+            <input type="text" name="preco" class="w-50 form-control" />
+          </div>
+        </div>
       </div>
-     </div>
+
+      <p class="ms-4 fs-4">Preço: 99.99</p>
     </div>
 
-    <div class="m-4 d-flex">
-     <div class="w-25">
-      <img src="/img/gin.jpg" alt="" class="w-100">
-     </div>
-     <div class="ms-4">
-      <p class="h-75">$Nome do produto$</p>
-      <div class="mt-4">
-       <label for="qtd">Quantidade: </label>
-       <input type="text" name="qtd">
-       <label for="preco">Preço: </label>
-       <input type="text" name="preco">
+    <div class="card mt-4">
+      <h3 class="ms-4 mt-4">Loja 1</h3>
+
+      <!-- Produtos -->
+      <div class="m-4 row">
+        <div class="col-md-4">
+          <img src="/img/gin.jpg" alt="" class="img-fluid" />
+        </div>
+        <div class="col-md-8">
+          <h3>$Nome do produto$</h3>
+          <div class="mt-4 d-flex-md">
+            <label for="qtd">Quantidade: </label>
+            <input type="text" name="qtd" class="w-50 form-control" />
+            <label for="preco">Preço: </label>
+            <input type="text" name="preco" class="w-50 form-control" />
+          </div>
+        </div>
       </div>
-     </div>
+
+      <p class="ms-4 fs-4">Preço: 99.99</p>
     </div>
 
-    <p class="ms-4 fs-4">Preço: 99.99</p>
-   </div>
+    <!-- asdsd -->
 
-   <!-- asdsd -->
-   <div class="card mt-4">
-    <h3 class="ms-4 mt-4">Loja 2</h3>
-    <!-- Produtos -->
-    <div class="m-4 d-flex">
-     <div class="w-25">
-      <img src="/img/gin.jpg" alt="" class="w-100">
-     </div>
-     <div class="ms-4">
-      <p class="h-75">$Nome do produto$</p>
-      <div class="mt-4">
-       <label for="qtd">Quantidade: </label>
-       <input type="text" name="qtd">
-       <label for="preco">Preço: </label>
-       <input type="text" name="preco">
+    <div class="mt-4 row">
+      <h4 class="col-md-4">Total do Pedido: 199.98</h4>
+      <div class="d-flex col-md-4 offset-md-4">
+        <p class="me-3">Deseja excluir o pedido?</p>
+        <button class="btn btn-danger" type="button">Excluir</button>
       </div>
-     </div>
     </div>
-
-    <div class="m-4 d-flex">
-     <div class="w-25">
-      <img src="/img/gin.jpg" alt="" class="w-100">
-     </div>
-     <div class="ms-4">
-      <p class="h-75">$Nome do produto$</p>
-      <div class="mt-4">
-       <label for="qtd">Quantidade: </label>
-       <input type="text" name="qtd">
-       <label for="preco">Preço: </label>
-       <input type="text" name="preco">
-      </div>
-     </div>
-    </div>
-
-    <p class="ms-4 fs-4">Preço: 99.99</p>
-   </div>
-   <div class="mt-4 d-flex justify-content-between">
-    <p class="fs-3">Total do Pedido: 199.98</p>
-    <div class="d-flex">
-     <p class="me-3">Deseja excluir o pedido?</p>
-     <button class="btn btn-danger">Excluir</button>
-    </div>  
-   </div>
-   <button class="btn btn-success mt-5 btn-lg  d-grid gap-2 col-3 mx-auto" type="submit">Efetuar Pedido</button>
-  </div>
- </form>
+    <button class="btn btn-success mt-4 btn-lg" type="submit">
+      Efetuar Pedido
+    </button>
+  </form>
 </div>
 
 <%- include('../partials/footer') %>
