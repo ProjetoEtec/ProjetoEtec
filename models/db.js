@@ -1,7 +1,7 @@
 require('dotenv').config()
 const Sequelize = require('sequelize')
-const sequelize =  new Sequelize('projeto_etec','root','123456',{
-  host:'localhost',
+const sequelize =  new Sequelize('bd_projeto_etec',process.env.DATABASE_USERNAME,process.env.DATABASE_PASSWORD,{
+  host:process.env.DATABASE_HOST,
   dialect:"mysql",
   dialectModule:require('mysql2'),
   port: 3306,
