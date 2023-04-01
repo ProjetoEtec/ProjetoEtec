@@ -35,6 +35,34 @@ router.get('/update/:id', (req, res) => {
   });
 })
 
+router.post('/update/func',(req,res)=>{
+  Cliente.update({
+    nome: req.body.nome,
+    cpf: req.body.cpf,
+    telefone: req.body.telefone,
+    nascimento: req.body.nascimento,
+    email:req.body.email,
+  },{
+    where:{ id : req.body.id }
+  }).then(()=>{
+    res.send("usuario atualizado com sucesso")
+  }).catch(()=>{
+    res.send("Houve um erro ao atualizar a conta")
+  })
+})
+
+router.get('/delete/:id',(req,res)=>{
+  Cliente.destroy({
+    where:{
+      id : req.params.id
+    }
+  }).then(()=>{
+    res.send("Conta deletada com sucesso")
+  }).catch(()=>{
+    res.send("Houve um erro ao deletar a conta")
+  })
+})
+
 router.get('/finalizar-pedido',(req,res)=>{
   res.render('cliente/finalizarpedido');
 })
