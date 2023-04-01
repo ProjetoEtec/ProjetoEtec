@@ -29,8 +29,14 @@ router.get('/adicionar-produto', (req, res) => {
 res.render('fornecedor/adicionarproduto.ejs');
 })
 
-router.get('/minha-conta', (req, res) => {
-    res.render('fornecedor/contafornecedor.ejs');
+router.get('/update/:id', (req, res) => {
+  Fornecedor.findOne({
+    where:{ id:req.params.id}
+  }).then((fornecedores)=>{
+    res.render('fornecedor/contafornecedor.ejs',{fornecedores});
+  }).catch((err)=>{
+    res.send("houve um erro ao entrar na conta")
+  })
 })
 
 router.get('/pedidos',(req, res) => {

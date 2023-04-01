@@ -6,57 +6,50 @@
     <div class="card-body">
         <!-- FORMULÁRIO ATUALIZAR DADOS -->
         <form action="" method="post">
+            <% if(fornecedores){ %>
             <h2 class="mt-2">Dados pessoais</h2>
             <div class="mt-3 col-md-6">
-                <label for="razaoSocial">Razão Social:</label><br>
-                <input type="text" name="nomeCompleto" class="mt-2 form-control">
+                <label for="razao_social">Razão Social:</label><br>
+                <input type="text" name="nomeCompleto" class="mt-2 form-control" value="<%=fornecedores.razao_social%>">
                 <small>Digite a razão social</small>
             </div>
             <div class="mt-4 col-md-4">
-                <label for="nomeFantasia">Nome Fantasia:</label><br>
-                <input type="text" name="nomeCompleto" class="mt-2 form-control">
+                <label for="nome_fantasia">Nome Fantasia:</label><br>
+                <input type="text" name="nome_fantasia" class="mt-2 form-control" value="<%=fornecedores.nome_fantasia%>">
                 <small>Digite o nome fantasia </small>
             </div>
             <div class="mt-3 col-md-4">
                 <label for="cnpj">CNPJ:</label> <br>
-                <input type="text" name="cnpj" class="mt-2 form-control">
+                <input type="text" name="cnpj" class="mt-2 form-control" value="<%=fornecedores.cnpj%>">
                 <small> Digite somente  números</small>
             </div>
             <div class="mt-3 col-md-4">
-                <label for="celular">Celular:</label> <br>
-                <input type="numero" name="celular" class="form-control mt-2">
+                <label for="telefone">Telefone:</label> <br>
+                <input type="numero" name="telefone" class="form-control mt-2" value="<%=fornecedores.telefone%>">
                 <small>Digite somente números</small>
             </div>
-                <div class="mt-4 col-md-4">
-                    <label for="endereco">Endereço:</label><br>
-                    <input type="text" name="endereco" class="mt-2 form-control">
-                    <small>Digite o seu endereço</small>
-                </div>
-                
-                <button type="submit" class="btn btn-success  mt-4">Salvar</button>
+            <!-- Fazer integração com google para enderecos -->
+            <div class="mt-4 col-md-4">
+                <label for="endereco">Endereço:</label><br>
+                <input type="text" name="endereco" class="mt-2 form-control">
+                <small>Digite o seu endereço</small>
             </div>
-
+            
             <h2 class="mt-4">Dados de acesso</h2>
             <div class="mt-3 col-md-6">
                 <label for="email">E-mail</label> <br>
-                <input type="text" name="email" class="mt-2 form-control">
+                <input type="text" name="email" class="mt-2 form-control"  value="<%=fornecedores.email%>">
                 <small>Digite seu e-mail</small>
             </div>
-            <div class="mt-3 col-md-6">
-                <label for="confirmacao-email">Confirme seu e-mail</label> <br>
-                <input type="text" name="confirmacao-email" class="mt-2 form-control">
-                <small> confirme seu e-mail</small>
-            </div>
-            <div class="mt-3 col-md-4">
-                <label for="senha">Senha</label><br>
-                <input type="text" name="senha" class="mt-2 form-control">
-                <small>Digite sua senha</small>
-            </div>
-
-
-            <!-- Rota para atualizar senha -->
-            <a href=""><button class="btn btn-danger mt-2" type="button">Alterar senha</button></a> <br>
             
+            <!-- Rota para atualizar senha -->
+            <div class="d-flex justify-content-between mt-4">
+                <a href=""><button class="btn btn-danger" type="button">Alterar senha</button></a> 
+                <a href=""><button type="button" class="btn btn-danger">Deletar conta</button></a>
+            </div>
+            
+            <button type="submit" class="btn btn-success  mt-4">Salvar alterações</button>
+            <% } %>
         </form>
     </div>
 </div>

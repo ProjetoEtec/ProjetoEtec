@@ -25,7 +25,7 @@ router.post('/cadastro/add',(req,res)=>{
 //read
 router.get('/update/:id', (req, res) => {
   Cliente.findOne({
-    where: { id : req.params.id },
+    where: { id : req.params.id }
   }).then((clientes)=>{
     res.render('cliente/minhaconta', {clientes});
   }).catch((err)=>{
