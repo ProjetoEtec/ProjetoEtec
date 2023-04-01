@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Cliente = require('../models/cliente')
-
+// cadastro
 router.get('/cadastro', (req, res) =>{
   res.render('cliente/cadastro');
 })
@@ -25,6 +25,7 @@ router.post('/cadastro/add',(req,res)=>{
 router.get('/login', (req, res) =>{
   res.render('cliente/login');
 });
+//read
 router.get('/update/:id', (req, res) => {
   Cliente.findOne({
     where: { id : req.params.id },
@@ -34,7 +35,7 @@ router.get('/update/:id', (req, res) => {
     res.send("Houve um erro ao fazer o cadastro")
   });
 })
-
+//update
 router.post('/update/func',(req,res)=>{
   Cliente.update({
     nome: req.body.nome,
@@ -50,7 +51,7 @@ router.post('/update/func',(req,res)=>{
     res.send("Houve um erro ao atualizar a conta")
   })
 })
-
+//delete
 router.get('/delete/:id',(req,res)=>{
   Cliente.destroy({
     where:{
@@ -61,6 +62,10 @@ router.get('/delete/:id',(req,res)=>{
   }).catch(()=>{
     res.send("Houve um erro ao deletar a conta")
   })
+})
+
+router.get('/carrinho', (req, res) => {
+  res.render('pages/carrinho.ejs');
 })
 
 router.get('/finalizar-pedido',(req,res)=>{

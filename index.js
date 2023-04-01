@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const cliente = require('./routes/cliente')
-
+const fornecedor = require('./routes/fornecedor')
 
 
 //Configurações
@@ -18,6 +18,7 @@ const cliente = require('./routes/cliente')
 
 // rotas
 app.use('/cliente',cliente)
+app.use('/fornecedor',fornecedor)
 app.get('/', (req, res) => {
     res.render('index.ejs');
 })
@@ -26,32 +27,8 @@ app.get('/produto', (req, res) => {
     res.render('pages/produto.ejs'); 
 })
 
-app.get('/carrinho', (req, res) => {
-    res.render('pages/carrinho.ejs');
-})
-
-app.get('/fornecedor/cadastro', (req, res) => {
-    res.render('pages/cadastrofornecedor.ejs');
-})
-
-app.get('/fornecedor/meus-produtos', (req, res) => {
-    res.render('pages/meusprodutos.ejs');
-})
-
 app.get('/loja-unica/:id',(req, res) => {
     res.render('pages/lojaUnica.ejs');
-})
-
-app.get('/adicionarproduto', (req, res) => {
-res.render('pages/adicionarproduto.ejs');
-})
-
-app.get('/contafornecedor', (req, res) => {
-    res.render('pages/contafornecedor.ejs');
-})
-
-app.get('/pedidofornecedor',(req, res) => {
-    res.render('pages/pedidofornecedor.ejs');
 })
 
 const PORT = 3000;
