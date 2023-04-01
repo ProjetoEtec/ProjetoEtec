@@ -1,0 +1,29 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<h1 class="mt-4">Pedidos</h1>
+<div class="card container mt-4">
+    <div class="card-body">
+            <h3>Informações  do cliente</h3>
+                <p>ID do pedido:</p>
+                <p>Nome:</p>
+                <p>Número para contato:</p>
+                <p>Endereço:</p>
+
+            <h2> Itens do pedido</h2>
+
+            <div class="d-flex gap-2 gap-md-4">
+                <img src="/img/gin.jpg" alt="" class="col-md-2 col-4">
+                <div class="mt-3 col-md-4">
+                    <p>Quantidade:</p>
+                    <p>Preço:</p>
+                </div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-success mt-4">Aceitar</button>
+                <button type="button" class="btn btn-success mt-4">Recusar</button>
+            </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
