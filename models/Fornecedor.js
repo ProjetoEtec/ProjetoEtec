@@ -16,9 +16,6 @@ const Fornecedor = db.sequelize.define("fornecedores", {
   telefone:{
     type:db.Sequelize.STRING
   },
-  data_nascimento:{
-    type:db.Sequelize.STRING
-  },
   email:{
     type:db.Sequelize.STRING
   },

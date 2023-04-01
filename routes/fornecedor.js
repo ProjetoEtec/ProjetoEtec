@@ -6,6 +6,21 @@ router.get('/cadastro', (req, res) => {
   res.render('fornecedor/cadastrofornecedor.ejs');
 })
 
+router.post('/cadastro/add',(req,res)=>{
+  Fornecedor.create({
+    razao_social:req.body.razao_social,
+    nome_fantasia:req.body.nome_fantasia,
+    cnpj:req.body.cnpj,
+    telefone:req.body.telefone,
+    email:req.body.email,
+    senha:req.body.senha
+  }).then(()=>{
+    res.send("Fornecedor criado com sucesso")
+  }).catch(()=>{
+    res.send("Houve um erro ao criar a conta de fornecedor")
+  })
+})
+
 router.get('/meus-produtos', (req, res) => {
   res.render('fornecedor/meusprodutos.ejs');
 })
