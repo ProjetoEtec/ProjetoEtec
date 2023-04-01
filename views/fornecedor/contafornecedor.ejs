@@ -5,9 +5,10 @@
 <div class="card container mt-4">
     <div class="card-body">
         <!-- FORMULÁRIO ATUALIZAR DADOS -->
-        <form action="" method="post">
+        <form action="/fornecedor/update/func" method="post">
             <% if(fornecedores){ %>
             <h2 class="mt-2">Dados pessoais</h2>
+            <input type="hidden" value="<%=fornecedores.id%>" name="id">
             <div class="mt-3 col-md-6">
                 <label for="razao_social">Razão Social:</label><br>
                 <input type="text" name="nomeCompleto" class="mt-2 form-control" value="<%=fornecedores.razao_social%>">

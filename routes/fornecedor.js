@@ -39,6 +39,23 @@ router.get('/update/:id', (req, res) => {
   })
 })
 
+router.post('/update/func', (req,res)=>{
+  Fornecedor.update({
+    razao_social:req.body.razao_social,
+    nome_fantasia:req.body.nome_fantasia,
+    cnpj:req.body.cnpj,
+    telefone:req.body.telefone,
+    email:req.body.email,
+    senha:req.body.senha
+  },{
+    where:{ id:req.body.id }
+  }).then(()=>{
+    res.send("Conta atualizada com sucesso")
+  }).catch((err)=>{
+    res.send("houve um erro ao atualizar a conta"+err)
+  })
+})
+
 router.get('/pedidos',(req, res) => {
     res.render('fornecedor/pedidofornecedor.ejs');
 })
