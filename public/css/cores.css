@@ -14,6 +14,29 @@
  background-color:var(--cor-secundaria);
 }
 
+.cartao{
+ width:23%;
+}
+
+@media (max-width: 1200px)
+{
+  .cartao{
+   width:22.25%;
+  }
+}
+ @media (max-width: 600px)
+{
+  .cartao{
+   width:40vw;
+  }
+} 
+ @media (max-width: 350px)
+{
+  .cartao{
+   width:100%;
+  }
+} 
+
 a,h1,h2,h3,h4,h5,h6,p,label,button,small{
  font-family: 'Poppins', sans-serif;
 }

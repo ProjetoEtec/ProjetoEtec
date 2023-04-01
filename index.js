@@ -38,6 +38,21 @@ app.get('/fornecedor/meus-produtos', (req, res) => {
     res.render('pages/meusprodutos.ejs');
 })
 
+app.get('/loja-unica/:id',(req, res) => {
+    res.render('pages/lojaUnica.ejs');
+})
+
+app.get('/adicionarproduto', (req, res) => {
+res.render('pages/adicionarproduto.ejs');
+})
+
+app.get('/contafornecedor', (req, res) => {
+    res.render('pages/contafornecedor.ejs');
+})
+
+app.get('/pedidofornecedor',(req, res) => {
+    res.render('pages/pedidofornecedor.ejs');
+})
 
 const PORT = 3000;
 app.listen(PORT, ()=>{
