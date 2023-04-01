@@ -13,7 +13,7 @@ const Cliente = db.sequelize.define("clientes", {
   complemento:{
     type:db.Sequelize.STRING
   },
-  nascimento:{
+  data_nascimento:{
     type:db.Sequelize.STRING
   },
   numero_casa:{

@@ -12,7 +12,7 @@ router.post('/cadastro/add',(req,res)=>{
     nome: req.body.nome,
     cpf: req.body.cpf,
     telefone: req.body.telefone,
-    nascimento: req.body.nascimento,
+    data_nascimento: req.body.data_nascimento,
     email:req.body.email,
     senha:req.body.senha,
   }).then(()=>{
@@ -38,7 +38,7 @@ router.post('/update/func',(req,res)=>{
     nome: req.body.nome,
     cpf: req.body.cpf,
     telefone: req.body.telefone,
-    nascimento: req.body.nascimento,
+    data_nascimento: req.body.data_nascimento,
     email:req.body.email,
   },{
     where:{ id : req.body.id }
