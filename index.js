@@ -30,7 +30,9 @@ app.get('/produto', (req, res) => {
 app.get('/loja-unica/:id',(req, res) => {
     res.render('pages/lojaUnica.ejs');
 })
-
+app.get('/login', (req, res) =>{
+  res.render('pages/login');
+});
 const PORT = 3000;
 app.listen(PORT, ()=>{
     console.log('Servidor rodando na porta '+PORT);

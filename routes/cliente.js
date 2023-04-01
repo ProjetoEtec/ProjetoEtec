@@ -22,9 +22,6 @@ router.post('/cadastro/add',(req,res)=>{
   })
 })
 
-router.get('/login', (req, res) =>{
-  res.render('cliente/login');
-});
 //read
 router.get('/update/:id', (req, res) => {
   Cliente.findOne({
