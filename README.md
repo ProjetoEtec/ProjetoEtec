@@ -1,4 +1,6 @@
-### Hi there 👋
+### Olá pessoal 👋
+
+Este é um projeto de MarketPlace para o TCC de nosso curso.
 
 <!--
 **ProjetoEtec/ProjetoEtec** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
