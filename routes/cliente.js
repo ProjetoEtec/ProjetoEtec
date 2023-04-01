@@ -62,7 +62,7 @@ router.get('/delete/:id',(req,res)=>{
 })
 
 router.get('/carrinho', (req, res) => {
-  res.render('pages/carrinho.ejs');
+  res.render('cliente/carrinho.ejs');
 })
 
 router.get('/finalizar-pedido',(req,res)=>{
