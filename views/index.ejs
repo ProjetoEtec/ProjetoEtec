@@ -28,28 +28,32 @@
 <!-- Lojas -->
 <h2 class="mt-5 mb-5">Lojas</h2>
 <!-- Fazer automático com banco -->
-<div class="card col-6 col-md-3">
-  <a href="/" class="text-decoration-none text-dark">
-      <img src="/img/mercado-livre-foto.png" class="img-fluid p-2" alt="..." />
-      <div class="card-body">
-          <h5>Loja 1</h5>
-          <p>Descrição sobre a loja.</p>
-          <button class="btn btn-success">Ver mais</button>
-      </div>
-  </a>
+<div class="d-flex flex-wrap gap-2 gap-sm-3 gap-md-4">
+  <div class="card cartao">
+    <a href="/" class="text-decoration-none text-dark">
+        <img src="/img/mercado-livre-foto.png" class="img-fluid p-2" alt="..." />
+        <div class="card-body">
+            <h5>Loja 1</h5>
+            <p>Descrição sobre a loja.</p>
+            <button class="btn btn-success">Ver mais</button>
+        </div>
+    </a>
+  </div>
 </div>
 <!-- Produtos -->
 <h2 class="mt-5 mb-5">Produtos</h2>
 <!-- Fazer automático com banco -->
-<div class="card col-6 col-md-3">
-  <a href="/produto" class="text-decoration-none text-dark">
-      <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
-      <div class="card-body">
-          <h5>Produto 1</h5>
-          <p>Descrição sobre o produto.</p>
-          <button class="btn btn-success">Ver mais</button>
-      </div>
-  </a>
+<div class="d-flex flex-wrap gap-2 gap-sm-3 gap-md-4">
+  <div class="card cartao">
+      <a href="/produto" class="text-decoration-none text-dark">
+          <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
+          <div class="card-body">
+              <h5>Produto 1</h5>
+              <p>Descrição sobre o produto.</p>
+              <button class="btn btn-success">Ver mais</button>
+          </div>
+      </a>
+  </div>
 </div>
 
 <%- include('partials/footer') %>
