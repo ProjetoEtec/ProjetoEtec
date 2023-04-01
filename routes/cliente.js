@@ -2,10 +2,6 @@ const express = require('express')
 const router = express.Router()
 const Cliente = require('../models/cliente')
 
-router.get('/',(req,res)=>{
-  res.send('teste')
-})
-
 router.get('/cadastro', (req, res) =>{
   res.render('cliente/cadastro');
 })
@@ -30,7 +26,13 @@ router.get('/login', (req, res) =>{
   res.render('cliente/login');
 });
 router.get('/update/:id', (req, res) => {
-  res.render('cliente/minhaconta');
+  Cliente.findOne({
+    where: { id : req.params.id },
+  }).then((clientes)=>{
+    res.render('cliente/minhaconta', {clientes});
+  }).catch((err)=>{
+    res.send("Houve um erro ao fazer o cadastro")
+  });
 })
 
 router.get('/finalizar-pedido',(req,res)=>{

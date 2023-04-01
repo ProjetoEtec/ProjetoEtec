@@ -13,6 +13,9 @@ const Cliente = db.sequelize.define("clientes", {
   complemento:{
     type:db.Sequelize.STRING
   },
+  nascimento:{
+    type:db.Sequelize.STRING
+  },
   numero_casa:{
     type:db.Sequelize.STRING
   },email:{
@@ -21,6 +24,6 @@ const Cliente = db.sequelize.define("clientes", {
     type:db.Sequelize.STRING
   }
 })
-
+// criar id automático
 //Cliente.sync({force:true})
 module.exports = Cliente;
