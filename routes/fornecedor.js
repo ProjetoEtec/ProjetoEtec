@@ -21,6 +21,17 @@ router.post('/cadastro/add',(req,res)=>{
   })
 })
 
+router.get('/delete/:id',(req,res)=>{
+  Fornecedor.destroy({
+    where:{
+      id : req.params.id
+    }
+  }).then(()=>{
+    res.send("Conta deletada com sucesso")
+  }).catch(()=>{
+    res.send("Houve um erro ao deletar a conta")
+  })
+})
 router.get('/meus-produtos', (req, res) => {
   res.render('fornecedor/meusprodutos.ejs');
 })
