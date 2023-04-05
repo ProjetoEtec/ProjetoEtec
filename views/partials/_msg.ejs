@@ -1,0 +1,7 @@
+<% if(erros) { %>
+ <% for(i = 0; i < erros.length; i++) { %>
+  <div class="bg-danger-subtle mt-2">
+   <p><%=erros[i].texto%></p>
+  </div>
+ <% } %>
+<% } %> 

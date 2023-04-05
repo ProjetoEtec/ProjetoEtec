@@ -3,9 +3,24 @@ const path = require('path');
 const app = express();
 const cliente = require('./routes/cliente')
 const fornecedor = require('./routes/fornecedor')
+const session = require('express-session')
+const flash = require("connect-flash")
 
 
 //Configurações
+    //sessão
+    app.use(session({
+        secret: 'wqeopiwqe',
+        resave: true,
+        saveUninitialized: true
+    }))
+    app.use(flash())
+    //middleware
+    app.use((req, res, next) =>{
+        res.locals.success_msg = req.flash("success_msg ")
+        res.locals.error_msg = req.flash("error_msg ")
+        next()
+    })
     //Template engine
     app.set('view engine', 'ejs');
     app.set('views', path.join(__dirname,'views'))

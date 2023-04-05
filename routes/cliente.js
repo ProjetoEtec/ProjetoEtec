@@ -1,13 +1,36 @@
 const express = require('express')
 const router = express.Router()
-const Cliente = require('../models/cliente')
+const Cliente = require('../models/Cliente')
 // cadastro
 router.get('/cadastro', (req, res) =>{
-  res.render('cliente/cadastro');
+  res.render('cliente/cadastro', {erros:erros});
 })
+let erros = [];
 
 router.post('/cadastro/add',(req,res)=>{
   // fazer validação de dados
+
+  erros = []
+
+  if(!req.body.nome || req.body.nome.length < 5){
+    erros.push({texto:"Nome inválido"})
+  }
+  if(!req.body.senha){
+    erros.push({texto:"Senha inválida"})
+  }
+  if(!req.body.email){
+    erros.push({texto:"Email inválido"})
+  }
+  if(!req.body.cpf){
+    erros.push({texto:"Cpf inválido"})
+  }
+  if(!req.body.data_nascimento){
+    erros.push({texto:"Data de nascimento inválida"})
+  }
+
+  if(erros.length > 0){
+    res.render("cliente/cadastro",{erros: erros})
+  }
   Cliente.create({
     nome: req.body.nome,
     cpf: req.body.cpf,
