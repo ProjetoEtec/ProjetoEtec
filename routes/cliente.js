@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Cliente = require('../models/Cliente')
+const Cliente = require('../models/cliente')
 // cadastro
 router.get('/cadastro', (req, res) =>{
   res.render('cliente/cadastro', {erros:erros});
