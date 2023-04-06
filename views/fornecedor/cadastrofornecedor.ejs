@@ -1,5 +1,7 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
+<%- include('../partials/erros') %>
+<%- include('../partials/_msg') %>
 
 <h1 class="mt-4">Minha conta:</h1>
 <div class="card container mt-4">
@@ -20,13 +22,13 @@
                 </div>
                 <div class="mt-3 col-md-4">
                     <label for="cnpj">CNPJ</label><br>
-                    <input type="text" name="cnpj" class="mt-2 form-control">
+                    <input type="text" name="cnpj" class="mt-2 form-control" id="cnpj">
                     <small>Digite somente números, sem pontos e traços.</small>
                 </div>
 
                 <div class="mt-3 col-md-4">
                     <label for="telefone">Telefone</label><br>
-                    <input type="text" name="telefone" class="mt-2 form-control">
+                    <input type="text" name="telefone" class="mt-2 form-control" id="telefone">
                     <small>Digite somente números, sem pontos e traços.</small>
                 </div>
 
@@ -37,8 +39,8 @@
                     <small>Digite seu e-mail</small>
                 </div>
                 <div class="mt-3 col-md-6">
-                    <label for="confirmacao-email">Confirme seu e-mail</label><br>
-                    <input type="text" name="confirmacao-email" class="mt-2 form-control">
+                    <label for="confirmacao_email">Confirme seu e-mail</label><br>
+                    <input type="text" name="confirmacao_email" class="mt-2 form-control">
                     <small>Confirme seu e-mail</small>
                 </div>
                 <div class="mt-3 col-md-4">
@@ -47,8 +49,8 @@
                     <small>Digite sua senha</small>
                 </div>
                 <div class="mt-3 col-md-4">
-                    <label for="confirmacao-senha">Confirme sua senha</label><br>
-                    <input type="text" name="confirmacao-senha" class="mt-2 form-control">
+                    <label for="confirmacao_senha">Confirme sua senha</label><br>
+                    <input type="text" name="confirmacao_senha" class="mt-2 form-control">
                     <small>Confirme sua senha</small>
                 </div>
                 <button class="btn btn-success mt-4" type="submit">Cadastrar</button>
@@ -56,10 +58,5 @@
         </form>
     </div>
 </div>
-
-
-
-
-
 
 <%- include('../partials/footer') %>

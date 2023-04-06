@@ -1,6 +1,10 @@
 const db = require('./db')
 
 const Cliente = db.sequelize.define("clientes", {
+  id:{
+    type: db.Sequelize.STRING,
+    primaryKey:true
+  },
   nome:{
     type:db.Sequelize.STRING
   },
@@ -18,12 +22,10 @@ const Cliente = db.sequelize.define("clientes", {
   },
   numero_casa:{
     type:db.Sequelize.STRING
-  },email:{
-    type:db.Sequelize.STRING
-  },senha:{
-    type:db.Sequelize.STRING
   }
 })
+
+// login.sync()
+// Cliente.sync({force:true})
 // criar id automático
-//Cliente.sync({force:true})
 module.exports = Cliente;

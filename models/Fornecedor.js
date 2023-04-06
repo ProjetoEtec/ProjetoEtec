@@ -1,6 +1,10 @@
 const db = require('./db')
-
+const Login = require('./login')
 const Fornecedor = db.sequelize.define("fornecedores", {
+  id:{
+    type: db.Sequelize.STRING,
+    primaryKey:true
+  },
   razao_social:{
     type:db.Sequelize.STRING
   },
@@ -15,14 +19,8 @@ const Fornecedor = db.sequelize.define("fornecedores", {
   },
   telefone:{
     type:db.Sequelize.STRING
-  },
-  email:{
-    type:db.Sequelize.STRING
-  },
-  senha:{
-    type:db.Sequelize.STRING
-  },
+  }
 })
 // criar id automático
-//Fornecedor.sync({force:true})
+// Fornecedor.sync({force:true})
 module.exports = Fornecedor;

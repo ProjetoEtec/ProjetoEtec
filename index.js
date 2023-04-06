@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const cliente = require('./routes/cliente')
 const fornecedor = require('./routes/fornecedor')
+const Login = require('./models/login');
 const session = require('express-session')
 const flash = require("connect-flash")
 
@@ -17,8 +18,8 @@ const flash = require("connect-flash")
     app.use(flash())
     //middleware
     app.use((req, res, next) =>{
-        res.locals.success_msg = req.flash("success_msg ")
-        res.locals.error_msg = req.flash("error_msg ")
+        res.locals.success_msg = req.flash("success_msg")
+        res.locals.error_msg = req.flash("error_msg")
         next()
     })
     //Template engine
@@ -48,6 +49,63 @@ app.get('/loja-unica/:id',(req, res) => {
 app.get('/login', (req, res) =>{
   res.render('pages/login');
 });
+
+app.get('/update/senha/:id',(req,res)=>{
+  erros = []
+
+  Login.findOne({
+    where:{
+      id: req.params.id
+    }
+  }).then((login)=>{
+    res.render('pages/alterarsenha', {
+      login:login,
+      erros:erros
+    })
+  })
+})
+
+app.post('/update/senha/func',(req,res)=>{
+  erros = []
+  if(!req.body.senha_antiga || !req.body.senha_nova){
+    erros.push({texto:"Senha inválida"})
+  }
+  if(erros.length > 0 ){
+    res.send("AA")
+  } else {
+    Login.findOne({
+      where:{
+        id: req.body.id
+      }
+    }).then((login)=>{
+      console.log(login.senha + "  " + req.body.senha_antiga)
+      if(login.senha != req.body.senha_antiga){
+        erros.push({texto:"Senha errada"})
+      }
+      if(!req.body.senha_antiga){
+        erros.push({texto:"Digite uma nova senha"})
+      }
+      if(erros.length > 0){
+        res.render('pages/alterarsenha', {
+          login:login,
+          erros:erros
+        })
+      } else{
+        Login.update({
+          senha:req.body.senha_nova
+        }, {
+          where:{
+            id:req.body.id
+          }
+        })
+        req.flash("success_msg","Senha alterada com sucesso!")
+        res.redirect('/cliente/update/'+login.id)
+      }
+      erros =[]
+    })
+  }
+})
+
 const PORT = 3000;
 app.listen(PORT, ()=>{
     console.log('Servidor rodando na porta '+PORT);

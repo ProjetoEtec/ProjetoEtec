@@ -1,0 +1,21 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<%- include('../partials/erros') %>
+
+<div class="card container mt-4">
+  <div class="card-body m-4">
+    <h2>Alterar senha</h2>
+      <form action="/update/senha/func" class="container mb-4" method="post">
+        <input type="hidden" name="id" id="id" value="<%=login.id%>">
+        <label for="email" class="mt-2">E-mail</label>
+        <input type="email" name="email" id="email" value="<%=login.email%>" class="form-control">
+        <label for="senha_antiga" class="mt-2">Senha antiga</label>
+        <input type="text" name="senha_antiga" id="senha_antiga" class="form-control">
+        <label for="senha_nova" class="mt-2">Senha nova</label>
+        <input type="text" name="senha_nova" id="senha_nova" class="form-control">
+        <button type="submit" class="btn btn-success mt-4">Confirmar</button>
+      </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
