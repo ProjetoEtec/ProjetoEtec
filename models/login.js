@@ -14,6 +14,9 @@ const Login = db.sequelize.define('login', {
   },
   senha: {
     type: db.Sequelize.STRING
+  },
+  type_user:{
+    type: db.Sequelize.STRING
   }
 })
 // Fornecedor.sync({force:true})

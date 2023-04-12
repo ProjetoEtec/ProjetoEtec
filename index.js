@@ -6,20 +6,25 @@ const fornecedor = require('./routes/fornecedor')
 const Login = require('./models/login');
 const session = require('express-session')
 const flash = require("connect-flash")
-
+const passport = require("passport")
+require('./config/auth')(passport)
 
 //Configurações
     //sessão
     app.use(session({
         secret: 'wqeopiwqe',
-        resave: true,
-        saveUninitialized: true
+        resave: false,
+        saveUninitialized: false,
+        cookie: { maxAge: 30 * 30 * 1000 }
     }))
+    app.use(passport.initialize());
+    app.use(passport.session());
     app.use(flash())
     //middleware
     app.use((req, res, next) =>{
         res.locals.success_msg = req.flash("success_msg")
         res.locals.error_msg = req.flash("error_msg")
+        res.locals.user = req.user || null
         next()
     })
     //Template engine
@@ -29,8 +34,8 @@ const flash = require("connect-flash")
     //Public
     app.use(express.static(path.join(__dirname, 'public')));
     //body parser
+    app.use(express.json()) 
     app.use(express.urlencoded({extended:false}))
-    app.use(express.json())
 
 // rotas
 app.use('/cliente',cliente)
@@ -49,6 +54,21 @@ app.get('/loja-unica/:id',(req, res) => {
 app.get('/login', (req, res) =>{
   res.render('pages/login');
 });
+
+app.post('/login', passport.authenticate('login'), (req, res) =>{
+  res.redirect('/')
+})
+// app.post('/login',  (req, res,next) =>{
+//   passport.authenticate('login', { successRedirect: "/login", failureRedirect: "/login", failureFlash: true})(req,res,next)
+// })
+
+app.get('/logout',(req,res)=>{
+  req.logout((err)=>{
+    if(err){return next(err)}
+    req.flash("success_msg","deslogado com sucesso")
+    res.redirect("/")
+  })
+})
 
 app.get('/update/senha/:id',(req,res)=>{
   erros = []
@@ -71,14 +91,14 @@ app.post('/update/senha/func',(req,res)=>{
     erros.push({texto:"Senha inválida"})
   }
   if(erros.length > 0 ){
-    res.send("AA")
+    req.flash("error_msg","Senha inválida")
+    res.redirect("/update/senha/"+req.body.id)
   } else {
     Login.findOne({
       where:{
         id: req.body.id
       }
     }).then((login)=>{
-      console.log(login.senha + "  " + req.body.senha_antiga)
       if(login.senha != req.body.senha_antiga){
         erros.push({texto:"Senha errada"})
       }

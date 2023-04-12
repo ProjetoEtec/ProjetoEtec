@@ -56,7 +56,8 @@ router.post('/cadastro/add',(req,res)=>{
         Login.create({
           id:id,
           email:req.body.email,
-          senha:req.body.senha
+          senha:req.body.senha,
+          type_user: "cliente"
         }).then(()=>{
           req.flash("success_msg","Conta criada com sucesso")
           res.redirect('/cliente/update/'+id)
