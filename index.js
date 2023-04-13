@@ -15,7 +15,7 @@ require('./config/auth')(passport)
         secret: 'wqeopiwqe',
         resave: false,
         saveUninitialized: false,
-        cookie: { maxAge: 30 * 30 * 1000 }
+        cookie: { maxAge: 30 * 60 * 1000 }
     }))
     app.use(passport.initialize());
     app.use(passport.session());
@@ -27,6 +27,20 @@ require('./config/auth')(passport)
         res.locals.user = req.user || null
         next()
     })
+    function isClienteAutheticated(req, res, next) {
+      if (req.isAuthenticated()){
+        if(req.user.type_user == "cliente") return next()
+      };
+      req.flash("error_msg","Logue na sua conta como cliente")
+      res.redirect('/login?fail=true');
+    }
+    function isFornecedorAutheticated(req, res, next) {
+      if (req.isAuthenticated()){
+        if(req.user.type_user == "fornecedor") return next()
+      };
+      req.flash("error_msg","Logue na sua conta como fornecedor")
+      res.redirect('/login?fail=true');
+    }
     //Template engine
     app.set('view engine', 'ejs');
     app.set('views', path.join(__dirname,'views'))
@@ -38,8 +52,8 @@ require('./config/auth')(passport)
     app.use(express.urlencoded({extended:false}))
 
 // rotas
-app.use('/cliente',cliente)
-app.use('/fornecedor',fornecedor)
+app.use('/cliente',isClienteAutheticated,cliente)
+app.use('/fornecedor',isFornecedorAutheticated,fornecedor)
 app.get('/', (req, res) => {
     res.render('index.ejs');
 })
@@ -58,9 +72,6 @@ app.get('/login', (req, res) =>{
 app.post('/login', passport.authenticate('login'), (req, res) =>{
   res.redirect('/')
 })
-// app.post('/login',  (req, res,next) =>{
-//   passport.authenticate('login', { successRedirect: "/login", failureRedirect: "/login", failureFlash: true})(req,res,next)
-// })
 
 app.get('/logout',(req,res)=>{
   req.logout((err)=>{

@@ -15,7 +15,6 @@ module.exports = async function(passport){
        let result = await Login.findOne({ where:{ email: email } }, function (err, result) {
         if (err) { return done(err); }
       });
-      console.log(result)
       if (!result) { return done(null, false); }
       if (result.senha != senha) { return done(null, false); }
       return done(null, result);
