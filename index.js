@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const cliente = require('./routes/cliente')
 const fornecedor = require('./routes/fornecedor')
+const cadastroUser = require('./routes/cadastroUsuario')
 const Login = require('./models/login');
 const session = require('express-session')
 const flash = require("connect-flash")
@@ -54,6 +55,7 @@ require('./config/auth')(passport)
 // rotas
 app.use('/cliente',isClienteAutheticated,cliente)
 app.use('/fornecedor',isFornecedorAutheticated,fornecedor)
+app.use('/',cadastroUser)
 app.get('/', (req, res) => {
     res.render('index.ejs');
 })
