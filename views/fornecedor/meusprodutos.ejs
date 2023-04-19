@@ -1,5 +1,7 @@
 <%- include('../partials/head') %> 
 <%- include('../partials/header') %>
+<%- include('../partials/_msg') %>
+
 
     <h2 class="mt-4">Meus produtos</h2>
 
@@ -11,10 +13,12 @@
             <% for(let i = 0 ; i < produto.length ; i++) { %>
                 <div class="card cartao">
                     <a href="produtos/<%=produto[i].id%>" class="text-decoration-none text-dark">
-                        <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
+                        <img src="data:<%= produto[i].fotoProdutos[0].tipo %>;base64,<%= produto[i].fotoProdutos[0].foto.toString('base64')%>" class="img-fluid p-2" alt="..." />
                         <div class="card-body">
                             <h5><%=produto[i].nome%></h5>
-                            <p>R$<%=produto[i].preco%></p>
+                            <%const valor = produto[i].preco %> 
+                            <%const valorFormatado = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); %> 
+                            <p><%=valorFormatado%></p>  
                             <button class="btn btn-success">Ver mais</button>
                         </div>
                     </a>

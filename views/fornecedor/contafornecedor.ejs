@@ -1,5 +1,6 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
+<%- include('../partials/erros') %>
 <%- include('../partials/_msg') %>
 
 <h1 class="mt-4">Minha conta</h1>
@@ -12,7 +13,7 @@
             <input type="hidden" value="<%=fornecedores.id%>" name="id">
             <div class="mt-3 col-md-6">
                 <label for="razao_social">Razão Social:</label><br>
-                <input type="text" name="nomeCompleto" class="mt-2 form-control" value="<%=fornecedores.razao_social%>">
+                <input type="text" name="razao_social" id="razao_social" class="mt-2 form-control" value="<%=fornecedores.razao_social%>">
                 <small>Digite a razão social</small>
             </div>
             <div class="mt-4 col-md-4">

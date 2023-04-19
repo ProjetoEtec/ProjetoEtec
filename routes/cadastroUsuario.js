@@ -96,6 +96,12 @@ router.post('/cli/cadastro/add',(req,res)=>{
   if(!req.body.cpf){
     erros.push({texto:"Cpf inválido"})
   }
+  if(!req.body.data_nascimento || req.body.data_nascimento.lenght < 8){
+    erros.push("Data de nascimento inválida")
+  }
+  if(!req.body.telefone || req.body.telefone.lenght < 8){
+    erros.push("Telefone inválido")
+  }
   if(req.body.email != req.body.confirmacao_email){
     erros.push({texto:"Os emails não correspondem"})
   }
