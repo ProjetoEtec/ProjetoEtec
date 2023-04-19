@@ -2,7 +2,8 @@ const express = require('express')
 const router = express.Router()
 const Fornecedor = require('../models/Fornecedor')
 const Login = require('../models/login')
-const {v4:uuidv4} = require('uuid')
+const crudProduto = require("./crudProduto")
+router.use('/produtos',crudProduto)
 let erros = []
 
 router.get('/delete/:id',(req,res)=>{
@@ -24,13 +25,6 @@ router.get('/delete/:id',(req,res)=>{
   }).catch(()=>{
     res.send("Houve um erro ao deletar a conta")
   })
-})
-router.get('/meus-produtos', (req, res) => {
-  res.render('fornecedor/meusprodutos.ejs');
-})
-
-router.get('/adicionar-produto', (req, res) => {
-res.render('fornecedor/adicionarproduto.ejs');
 })
 
 router.get('/update/:id', (req, res) => {
@@ -59,9 +53,9 @@ router.post('/update/func', (req,res)=>{
   })
 })
 
-
-
 router.get('/pedidos',(req, res) => {
     res.render('fornecedor/pedidofornecedor.ejs');
 })
+
+
 module.exports = router

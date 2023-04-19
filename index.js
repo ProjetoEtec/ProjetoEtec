@@ -5,9 +5,11 @@ const cliente = require('./routes/cliente')
 const fornecedor = require('./routes/fornecedor')
 const cadastroUser = require('./routes/cadastroUsuario')
 const Login = require('./models/login');
+const Produto = require('./models/produto');
 const session = require('express-session')
 const flash = require("connect-flash")
 const passport = require("passport")
+const FotoProduto = require('./models/fotosDoProduto')
 require('./config/auth')(passport)
 
 //Configurações
@@ -16,7 +18,7 @@ require('./config/auth')(passport)
         secret: 'wqeopiwqe',
         resave: false,
         saveUninitialized: false,
-        cookie: { maxAge: 30 * 60 * 1000 }
+        cookie: { maxAge: 50 * 60 * 1000 } // 50 minutos
     }))
     app.use(passport.initialize());
     app.use(passport.session());

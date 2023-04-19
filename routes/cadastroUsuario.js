@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Fornecedor = require('../models/Fornecedor')
+const Cliente = require('../models/cliente')
 const Login = require('../models/login')
 const {v4:uuidv4} = require('uuid')
 let erros = []
@@ -140,5 +141,8 @@ router.post('/cli/cadastro/add',(req,res)=>{
   }
 })
 
+router.get('/carrinho', (req, res) => {
+  res.render('cliente/carrinho.ejs');
+})
 
 module.exports = router

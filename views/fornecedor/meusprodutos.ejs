@@ -1,70 +1,28 @@
 <%- include('../partials/head') %> 
 <%- include('../partials/header') %>
 
-<h2 class="mt-5">Meus produtos</h2>
+    <h2 class="mt-4">Meus produtos</h2>
 
+    <a href="/fornecedor/produtos/add" class="btn btn-success mt-2">Adicionar produto</a>
+    
 <div>
-    <div class="d-flex flex-wrap gap-2 gap-sm-3 gap-md-4">
-        <div class="card cartao">
-            <a href="/produto" class="text-decoration-none text-dark">
-                <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
-                <div class="card-body">
-                    <h5>Produto 1</h5>
-                    <p>Descrição sobre o produto.</p>
-                    <button class="btn btn-success">Ver mais</button>
+    <div class="d-flex flex-wrap gap-2 gap-sm-3 gap-md-4 mt-4">
+        <%if(produto) { %>
+            <% for(let i = 0 ; i < produto.length ; i++) { %>
+                <div class="card cartao">
+                    <a href="produtos/<%=produto[i].id%>" class="text-decoration-none text-dark">
+                        <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
+                        <div class="card-body">
+                            <h5><%=produto[i].nome%></h5>
+                            <p>R$<%=produto[i].preco%></p>
+                            <button class="btn btn-success">Ver mais</button>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="card cartao">
-            <a href="/produto" class="text-decoration-none text-dark">
-                <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
-                <div class="card-body">
-                    <h5>Produto 1</h5>
-                    <p>Descrição sobre o produto.</p>
-                    <button class="btn btn-success">Ver mais</button>
-                </div>
-            </a>
-        </div>
-        <div class="card cartao">
-            <a href="/produto" class="text-decoration-none text-dark">
-                <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
-                <div class="card-body">
-                    <h5>Produto 1</h5>
-                    <p>Descrição sobre o produto.</p>
-                    <button class="btn btn-success">Ver mais</button>
-                </div>
-            </a>
-        </div>
-        <div class="card cartao">
-            <a href="/produto" class="text-decoration-none text-dark">
-                <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
-                <div class="card-body">
-                    <h5>Produto 1</h5>
-                    <p>Descrição sobre o produto.</p>
-                    <button class="btn btn-success">Ver mais</button>
-                </div>
-            </a>
-        </div>
-        <div class="card cartao">
-            <a href="/produto" class="text-decoration-none text-dark">
-                <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
-                <div class="card-body">
-                    <h5>Produto 1</h5>
-                    <p>Descrição sobre o produto.</p>
-                    <button class="btn btn-success">Ver mais</button>
-                </div>
-            </a>
-        </div>
-        <div class="card cartao">
-            <a href="/produto" class="text-decoration-none text-dark">
-                <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
-                <div class="card-body">
-                    <h5>Produto 1</h5>
-                    <p>Descrição sobre o produto.</p>
-                    <button class="btn btn-success">Ver mais</button>
-                </div>
-            </a>
-        </div>
+            <% } %>
+        <% } else { %>
+            <p>Não há produtos</p>
+        <% } %>
     </div>
 </div>
 <%- include('../partials/footer') %>

@@ -53,9 +53,6 @@ router.get('/delete/:id',(req,res)=>{
   })
 })
 
-router.get('/carrinho', (req, res) => {
-  res.render('cliente/carrinho.ejs');
-})
 
 router.get('/finalizar-pedido',(req,res)=>{
   res.render('cliente/finalizarpedido');
