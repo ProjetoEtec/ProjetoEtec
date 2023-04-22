@@ -14,15 +14,6 @@
             <a class="nav-link" href="/login">Login</a>
           </li> 
           <% } %>
-          <% if(user != null) { %>
-          <% let type = user.type_user; let id = user.id; %>
-            <li class="nav-item">
-              <a class="nav-link" href="/<%=type%>/update/<%=id%>">Conta</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/logout">Sair</a>
-            </li>
-          <% } %>
           <% if (user == null ) { %>
           <li class="nav-item">
             <a class="nav-link" href="/carrinho">Carrinho</a>
@@ -36,9 +27,21 @@
               <a class="nav-link" href="/fornecedor/produtos">Meus produtos</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/fornecedor/minha-loja">Minha loja</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="/fornecedor/pedidos">Pedidos</a>
             </li>
           <% } %>
+          <% if(user != null) { %>
+            <% let type = user.type_user; let id = user.id; %>
+              <li class="nav-item">
+                <a class="nav-link" href="/<%=type%>/update/<%=id%>">Conta</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Sair</a>
+              </li>
+            <% } %>
         </ul>
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

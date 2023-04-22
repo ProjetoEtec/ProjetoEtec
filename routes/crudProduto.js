@@ -71,7 +71,7 @@ router.get("/:id",(req,res)=>{
 })
 
 //atualizar produto
-router.post("/update",upload.single('foto1'), async(req,res)=>{
+router.post("/update", async(req,res)=>{
   erros = []
   
   if(!req.body.nomedoproduto || req.body.nomedoproduto.lenght < 4) {
@@ -92,7 +92,6 @@ router.post("/update",upload.single('foto1'), async(req,res)=>{
       res.render("fornecedor/produtoFornecedor.ejs",{produto:produto,erros:erros})
     })
   } else {
-    const imagem = req.file.buffer
     try {
       await Produto.update({
         nome:req.body.nomedoproduto,
@@ -100,10 +99,7 @@ router.post("/update",upload.single('foto1'), async(req,res)=>{
         estoque:req.body.estoque,
         descricao:req.body.descricao
       },{
-        where:{id : req.body.id }
-      })
-      await FotoProduto.update({foto : imagem, tipo:req.file.mimetype},{ where :{ produto_id : req.body.id }}).then((produto)=>{
-        console.table(produto)
+        where:{ id : req.body.id }
       })
       req.flash("success_msg","Produto atualizado com sucesso")
       res.redirect("/fornecedor/produtos")
@@ -111,6 +107,13 @@ router.post("/update",upload.single('foto1'), async(req,res)=>{
       res.status(500).send("erro ao salvar o produto" + error)
     }
   }
+})
+//atualizar foto do produto
+router.post("/update/foto", upload.single('foto1'), async (req, res)=>{
+  const imagem = req.file.buffer
+  await FotoProduto.update({foto : imagem, tipo:req.file.mimetype},{ where :{ produto_id : req.body.id }})
+
+  res.redirect("/fornecedor/produtos/"+req.body.id)
 })
 
 router.get("/delete/:id",async(req,res)=>{
