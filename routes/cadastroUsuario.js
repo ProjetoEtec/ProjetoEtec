@@ -3,6 +3,8 @@ const router = express.Router()
 const Fornecedor = require('../models/Fornecedor')
 const Cliente = require('../models/cliente')
 const Login = require('../models/login')
+const Banner = require('../models/banner')
+const Logo = require('../models/logo')
 const {v4:uuidv4} = require('uuid')
 let erros = []
 //cadastro fornecedor
@@ -11,8 +13,11 @@ router.get('/for/cadastro', (req, res) => {
   res.render('fornecedor/cadastrofornecedor.ejs',{erros});
 })
 
-
-
+/** 
+ * Melhorias:
+ * funcoes assincronas para colocar os dados no banco de dados
+ * em vez de aninhar tudo 
+ * */ 
 router.post('/for/cadastro/add',(req,res)=>{
   erros = []
   if(!req.body.razao_social){
@@ -62,6 +67,14 @@ router.post('/for/cadastro/add',(req,res)=>{
             senha:req.body.senha,
             type_user: "fornecedor"
           }).then(()=>{
+            Banner.create({
+              id:uuidv4(),
+              fornecedor_id:id
+            })
+            Logo.create({
+              id:uuidv4(),
+              fornecedor_id:id
+            })
             req.flash("success_msg","Conta criada com sucesso, logue para ter acesso")
             res.redirect('/')
           }).catch((err)=>{

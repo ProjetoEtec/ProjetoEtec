@@ -40,3 +40,8 @@
 a,h1,h2,h3,h4,h5,h6,p,label,button,small{
  font-family: 'Poppins', sans-serif;
 }
+
+.editar{
+  height: 90vh;
+  width: 90%;
+}

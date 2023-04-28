@@ -1,5 +1,7 @@
 const db = require('./db')
 const Login = require('./login')
+const Logo = require('./logo')
+const Banner = require('./banner')
 const Fornecedor = db.sequelize.define("fornecedores", {
   id:{
     type: db.Sequelize.STRING,
@@ -17,10 +19,32 @@ const Fornecedor = db.sequelize.define("fornecedores", {
   telefone:{
     type:db.Sequelize.STRING
   },
-  telefone:{
+  descricao:{
     type:db.Sequelize.STRING
   }
 })
 // criar id automático
 // Fornecedor.sync({force:true})
+// Banner.sync({force:true})
+// Logo.sync({force:true})
+
+Banner.belongsTo(Fornecedor,{
+  foreignKey:"fornecedor_id",
+  constraints:false
+})
+Fornecedor.hasOne(Banner,{
+  foreignKey:"fornecedor_id",
+  constraints:false
+})
+Logo.belongsTo(Fornecedor,{
+  foreignKey:"fornecedor_id",
+  constraints:false
+})
+Fornecedor.hasOne(Logo,{
+  foreignKey:"fornecedor_id",
+  constraints:false
+})
+
+
+
 module.exports = Fornecedor;

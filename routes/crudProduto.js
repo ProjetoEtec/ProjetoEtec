@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const Produto = require('../models/produto')
 const {v4:uuidv4} = require('uuid')
+const Produto = require('../models/produto')
 const FotoProduto = require('../models/fotosDoProduto')
 const fs = require("fs")
 

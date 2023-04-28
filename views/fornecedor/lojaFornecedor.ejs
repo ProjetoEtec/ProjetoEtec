@@ -1,0 +1,103 @@
+<%- include('../partials/head') %>
+  <%- include('../partials/header') %>
+
+    <%let banner = fornecedor.banner.banner;%> 
+    <%let tipoBanner = fornecedor.banner.tipo %>
+    <% if(banner != null) {%>
+      <img src="data:<%=tipoBanner%>;base64,<%=banner.toString('base64')%>" alt="banner" class="img-fluid mt-3" style="height:20vh;object-fit: cover;">
+    <% } else { %>
+      <div class="container-fluid p-5 bg-light border rounded-3 m-3">
+          <h1 class="display">Insira um banner</h1>
+      </div>  
+    <% } %>
+    <div class="mt-3 d-flex justify-content-between ">
+      <div class="d-flex align-items-center flex-wrap" style="max-width: 70%;">
+        <% if(fornecedor.logo.logo != null) { %>
+          <img src="data:<%=fornecedor.logo.tipo%>;base64,<%=fornecedor.logo.logo.toString('base64')%>" alt="logo da loja" class="rounded-circle col-3 col-md-1 me-md-3 me-2">
+        <% } else { %>
+          <div class="bg-light border me-md-3 me-2" style="height:5rem;width: 5rem;">
+            <p>Insira um logo</p>
+          </div>
+        <% } %>
+          <h2 class="text-wrap">
+            <%= fornecedor.nome_fantasia%>
+          </h2>
+      </div>
+      <!-- EDITAR LOGO -->
+      <a class="btn btn-primary " style="height: 2.5rem" data-bs-toggle="offcanvas" href="#offcanvasExample"
+        role="button" aria-controls="offcanvasExample">
+        <i class="fa-solid fa-pen-to-square d-md-none" style="color: #ffffff;"></i>
+        <p class="d-none d-md-block">Editar Página</p>
+      </a>
+
+      <div class="offcanvas editar" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel">Editar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="col-md-6 container">
+            <form action="/fornecedor/logo" method="post" enctype="multipart/form-data">
+              <input type="hidden" name="id" value="<%=fornecedor.id%>">
+              <label for="logo">Alterar logo</label>
+              <input type="file" name="logo" id="logo" accept="image/*" class="form-control" required>
+              <button type="submit" class="btn btn-success mt-2">Alterar logo</button>
+            </form>
+            <form action="/fornecedor/banner" method="post" enctype="multipart/form-data" class="mt-4">
+              <input type="hidden" name="id" value="<%=fornecedor.id%>">
+              <label for="logo">Alterar banner</label>
+              <input type="file" name="banner" id="banner" accept="image/*" class="form-control" required>
+              <button type="submit" class="btn btn-success mt-2">Alterar banner</button>
+            </form>
+            <form action="" method="post" class="mt-4">
+              <input type="hidden" name="id" value="<%=fornecedor.id%>">
+              <label for="logo">Alterar descrição</label>
+              <textarea type="text" name="descricao_loja" id="descricao_loja" class="form-control" required></textarea>
+              <button type="submit" class="btn btn-success mt-2">Alterar descrição</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+    <h2 class="mt-4">Divisão</h2>
+
+    <%- include('../partials/footer') %>
