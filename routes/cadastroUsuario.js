@@ -76,7 +76,7 @@ router.post('/for/cadastro/add',(req,res)=>{
               fornecedor_id:id
             })
             req.flash("success_msg","Conta criada com sucesso, logue para ter acesso")
-            res.redirect('/')
+            res.redirect('/login')
           }).catch((err)=>{
             res.send("Houve um erro ao criar o usuario"+err)
           })

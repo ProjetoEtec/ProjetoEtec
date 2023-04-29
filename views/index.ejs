@@ -29,32 +29,82 @@
 <!-- Lojas -->
 <h2 class="mt-5 mb-5">Lojas</h2>
 <!-- Fazer automático com banco -->
-<div class="d-flex flex-wrap gap-2 gap-sm-3 gap-md-4">
-  <div class="card cartao">
-    <a href="/" class="text-decoration-none text-dark">
-        <img src="/img/mercado-livre-foto.png" class="img-fluid p-2" alt="..." />
-        <div class="card-body">
-            <h5>Loja 1</h5>
-            <p>Descrição sobre a loja.</p>
+<div class="row row-cols-4">  
+  <% for (i = 0; i < fornecedores.length ; i++ ) { %>
+  <div class="col-6 col-md-4 col-lg-3">
+    <div class="card cartao">
+      <a href="/" class="text-decoration-none text-dark position-relative">
+          <% let logo = fornecedores[i].logo.logo%>
+          <%if(logo != null) { %>
+            <img src="data:<%= fornecedores[i].logo.tipo %>;base64,<%= fornecedores[i].logo.logo.toString('base64')%>" class="img-produto p-2" alt="..." />
+          <% } else { %>
+            <div>
+              Essa loja não tem logo
+            </div>
+          <% } %>
+          <div class="card-body">
+            <h5><%=fornecedores[i].nome_fantasia%></h5>
             <button class="btn btn-success">Ver mais</button>
-        </div>
-    </a>
+          </div>
+      </a>
+    </div>
   </div>
+  <% } %> 
 </div>
 <!-- Produtos -->
 <h2 class="mt-5 mb-5">Produtos</h2>
 <!-- Fazer automático com banco -->
-<div class="d-flex flex-wrap gap-2 gap-sm-3 gap-md-4">
-  <div class="card cartao">
-      <a href="/produto" class="text-decoration-none text-dark">
-          <img src="/img/gin.jpg" class="img-fluid p-2" alt="..." />
-          <div class="card-body">
-              <h5>Produto 1</h5>
-              <p>Descrição sobre o produto.</p>
-              <button class="btn btn-success">Ver mais</button>
-          </div>
-      </a>
-  </div>
-</div>
+<div class="row row-cols-4">
+  <% for(i = 0; i < produtos.length ; i++) { %>
+  <div class="col-6 col-md-4 col-lg-3 ">      
+    <div class="card cartao position-relative">
+      <img src="data:<%= produtos[i].fotoProdutos[0].tipo %>;base64,<%= produtos[i].fotoProdutos[0].foto.toString('base64')%>" class="img-produto p-2" alt="..." />
+      <div class="card-body">
+        <% let nome = produtos[i].nome %>
+        <%if(nome.length > 18) { %>
+          <h5><%=nome.slice(0,20)%>...</h5>
+        <% } else { %>
+          <h5><%=nome%></h5>
+        <% } %>
+        <%const valor = produtos[i].preco %> 
+        <%const valorFormatado = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); %> 
+        <p><%=valorFormatado%></p>  
+      </div>
+      <div class="card-body position-absolute bottom-0 start-0">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal<%=i%>">
+          Ver mais
+        </button>
 
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal<%=i%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Produto</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <img src="data:<%= produtos[i].fotoProdutos[0].tipo %>;base64,<%= produtos[i].fotoProdutos[0].foto.toString('base64')%>" class="img-fluid p-2" style="object-fit: cover;" alt="..." />
+                <h4><%=produtos[i].nome%></h4>
+                <p>Preço:<%=valorFormatado%></p>
+                <p>Estoque:<%=produtos[i].estoque%></p>
+                <p><%=produtos[i].descricao%></p>
+                <div class="d-flex">
+                  <input type="text" class="form-control" style="width: 4rem;">
+                  <button class="btn btn-success ms-2">Adicionar ao carrinho</button>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
 <%- include('partials/footer') %>

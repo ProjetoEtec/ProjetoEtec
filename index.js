@@ -4,12 +4,19 @@ const app = express();
 const cliente = require('./routes/cliente')
 const fornecedor = require('./routes/fornecedor')
 const cadastroUser = require('./routes/cadastroUsuario')
+const Fornecedor = require('./models/Fornecedor');
+const Logo = require('./models/logo');
+const Sequelize = require("sequelize")
 const Login = require('./models/login');
 const Produto = require('./models/produto');
 const session = require('express-session')
 const flash = require("connect-flash")
 const passport = require("passport")
 const FotoProduto = require('./models/fotosDoProduto')
+
+// cuidado !! isso é somente para atualizar todas as tabelas do banco de dados!!
+// // require('./models/updatedb')
+
 require('./config/auth')(passport)
 
 //Configurações
@@ -58,8 +65,28 @@ require('./config/auth')(passport)
 app.use('/cliente',isClienteAutheticated,cliente)
 app.use('/fornecedor',isFornecedorAutheticated,fornecedor)
 app.use('/',cadastroUser)
-app.get('/', (req, res) => {
-    res.render('index.ejs');
+app.get('/', async (req, res) => {
+  const fornecedores = await Fornecedor.findAll({
+    include:[{
+      model:Logo
+    }]
+  })
+  const produtos = await Produto.findAll({
+    include:[{
+      model:FotoProduto,
+      required:true
+    }],
+    order: Sequelize.literal("rand()"),
+    limit:20})
+  try{
+    console.log(produtos)
+    res.render('index.ejs',{
+      fornecedores:fornecedores,
+      produtos:produtos
+    });  
+  } catch ( err ) {
+    res.send( err.message )
+  }
 })
 
 app.get('/produto', (req, res) => { 

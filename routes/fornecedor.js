@@ -118,7 +118,7 @@ router.get('/minha-loja',async (req, res) => {
     model:Logo,
     required:true
   }]})
-  console.log(fornecedor.banner)
+  // console.log(fornecedor.banner)
   // res.send(fornecedor)
   res.render('fornecedor/lojaFornecedor',{fornecedor})
 })

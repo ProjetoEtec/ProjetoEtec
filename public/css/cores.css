@@ -15,27 +15,32 @@
 }
 
 .cartao{
- width:23%;
+ height: 25rem;
+ margin-top: 2rem;
+}
+
+.img-produto{
+  width: 100%;
+  height: 15rem;
+  object-fit: cover;
 }
 
 @media (max-width: 1200px)
 {
-  .cartao{
-   width:22.25%;
+
+}
+@media (max-width: 750px)
+{
+  .img-produto{
+   height: 12.5rem;
   }
 }
- @media (max-width: 600px)
+@media (max-width: 350px)
 {
-  .cartao{
-   width:40vw;
+  .img-produto{
+   height: 12rem;
   }
-} 
- @media (max-width: 350px)
-{
-  .cartao{
-   width:100%;
-  }
-} 
+}
 
 a,h1,h2,h3,h4,h5,h6,p,label,button,small{
  font-family: 'Poppins', sans-serif;
@@ -43,5 +48,5 @@ a,h1,h2,h3,h4,h5,h6,p,label,button,small{
 
 .editar{
   height: 90vh;
-  width: 90%;
+  width: 80%;
 }
