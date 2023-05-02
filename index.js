@@ -28,6 +28,7 @@ require('./config/auth')(passport)
         store: new MemoryStore({
           checkPeriod:86400000
         }),
+        saveUninitialized:false,
         cookie: { maxAge: 50 * 60 * 1000 } // 50 minutos
     }))
     app.use(passport.initialize());
