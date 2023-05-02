@@ -10,6 +10,7 @@ const Sequelize = require("sequelize")
 const Login = require('./models/login');
 const Produto = require('./models/produto');
 const session = require('express-session')
+const MemoryStore = require('memorystore')(session)
 const flash = require("connect-flash")
 const passport = require("passport")
 const FotoProduto = require('./models/fotosDoProduto')
@@ -24,7 +25,9 @@ require('./config/auth')(passport)
     app.use(session({
         secret: 'wqeopiwqe',
         resave: false,
-        saveUninitialized: false,
+        store: new MemoryStore({
+          checkPeriod:86400000
+        }),
         cookie: { maxAge: 50 * 60 * 1000 } // 50 minutos
     }))
     app.use(passport.initialize());
