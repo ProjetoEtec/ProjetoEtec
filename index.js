@@ -14,7 +14,7 @@ var SequelizeStore = require("connect-session-sequelize")(session.Store);
 const flash = require("connect-flash")
 const passport = require("passport")
 const FotoProduto = require('./models/fotosDoProduto');
-
+const extendDefaultFields =  require('./models/session');
 // cuidado !! isso é somente para atualizar todas as tabelas do banco de dados!!
 // // require('./models/updatedb')
 
