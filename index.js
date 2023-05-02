@@ -6,14 +6,14 @@ const fornecedor = require('./routes/fornecedor')
 const cadastroUser = require('./routes/cadastroUsuario')
 const Fornecedor = require('./models/Fornecedor');
 const Logo = require('./models/logo');
-const Sequelize = require("sequelize")
+const { sequelize,Sequelize } = require('./models/db');
 const Login = require('./models/login');
 const Produto = require('./models/produto');
 const session = require('express-session')
 var SequelizeStore = require("connect-session-sequelize")(session.Store);
 const flash = require("connect-flash")
 const passport = require("passport")
-const FotoProduto = require('./models/fotosDoProduto')
+const FotoProduto = require('./models/fotosDoProduto');
 
 // cuidado !! isso é somente para atualizar todas as tabelas do banco de dados!!
 // // require('./models/updatedb')
@@ -26,7 +26,7 @@ require('./config/auth')(passport)
         secret: 'wqeopiwqe',
         resave: false,
         store: new SequelizeStore({
-          checkPeriod:86400000
+          db: sequelize
         }),
         saveUninitialized:false,
         cookie: { maxAge: 50 * 60 * 1000 } // 50 minutos
