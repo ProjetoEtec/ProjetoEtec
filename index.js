@@ -6,6 +6,7 @@ const fornecedor = require('./routes/fornecedor')
 const cadastroUser = require('./routes/cadastroUsuario')
 const Fornecedor = require('./models/Fornecedor');
 const Logo = require('./models/logo');
+const Banner = require('./models/banner');
 const { sequelize,Sequelize } = require('./models/db');
 const Login = require('./models/login');
 const Produto = require('./models/produto');
@@ -83,7 +84,7 @@ app.get('/', async (req, res) => {
     order: Sequelize.literal("rand()"),
     limit:20})
   try{
-    console.log(produtos)
+    // console.log(produtos)
     res.render('index.ejs',{
       fornecedores:fornecedores,
       produtos:produtos
@@ -97,9 +98,27 @@ app.get('/produto', (req, res) => {
     res.render('pages/produto.ejs'); 
 })
 
-app.get('/loja-unica/:id',(req, res) => {
-    res.render('pages/lojaUnica.ejs');
+app.get('/loja-unica/:id',async (req, res) => {
+  let fornecedor = await Fornecedor.findOne({
+    where:{id:req.params.id},
+    include : [{
+      model:Logo,
+      required: true
+    },{
+      model:Banner,
+      required: true
+    }]
+  })
+  let produtos = await Produto.findAll({
+    where:{fornecedor_id : req.params.id},
+    include:[{
+      model:FotoProduto,
+      required:true
+    }]
+  })
+  res.render('pages/loja.ejs',{fornecedor:fornecedor,produtos:produtos});
 })
+
 app.get('/login', (req, res) =>{
   res.render('pages/login');
 });

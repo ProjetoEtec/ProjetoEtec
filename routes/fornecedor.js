@@ -5,6 +5,9 @@ const Fornecedor = require('../models/Fornecedor')
 const Login = require('../models/login')
 const Banner = require('../models/banner')
 const Logo = require('../models/logo')
+const FotoProduto = require('../models/fotosDoProduto')
+const Produto = require('../models/produto')
+const sharp = require('sharp');
 router.use('/produtos',crudProduto)
 
 const multer = require('multer');
@@ -18,6 +21,9 @@ router.get('/delete/:id',(req,res)=>{
       id : req.params.id
     }
   }).then(()=>{
+    Produto.destroy({where:{
+      fornecedor_id:req.params.id
+    }})
     Login.destroy({
       where:{
         id:req.params.id
@@ -84,21 +90,27 @@ router.get('/pedidos',(req, res) => {
 })
 
 router.post('/logo',upload.single("logo"),(req, res) => {
-  const imagem = req.file.buffer
-  Logo.update({
-    logo:req.file.buffer,
-    tipo:req.file.mimetype
-  },{ where: { fornecedor_id: req.body.id }}).then(()=>{
-    res.redirect("/fornecedor/minha-loja")
+  let imagem = req.file.buffer
+  sharp(imagem).resize({ width: 300 }).toBuffer((err,imagemRedimensionada,info)=>{
+    imagem = imagemRedimensionada
+    Logo.update({
+      logo:imagem,
+      tipo:req.file.mimetype
+    },{ where: { fornecedor_id: req.body.id }}).then(()=>{
+      res.redirect("/fornecedor/minha-loja")
+    })
   })
 })
 router.post('/banner',upload.single("banner"),(req, res) => {
-  const imagem = req.file.buffer
-  Banner.update({
-    banner:req.file.buffer,
-    tipo:req.file.mimetype
-  },{ where: { fornecedor_id: req.body.id}}).then(()=>{
-    res.redirect("/fornecedor/minha-loja")
+  let imagem = req.file.buffer
+  sharp(imagem).resize({ width: 300 }).toBuffer((err,imagemRedimensionada,info)=>{
+    imagem = imagemRedimensionada
+    Banner.update({
+      banner:imagem,
+      tipo:req.file.mimetype
+    },{ where: { fornecedor_id: req.body.id}}).then(()=>{
+      res.redirect("/fornecedor/minha-loja")
+    })
   })
 })
 router.post('/descricao',(req, res) => {

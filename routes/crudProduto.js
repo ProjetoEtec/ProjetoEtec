@@ -4,6 +4,7 @@ const {v4:uuidv4} = require('uuid')
 const Produto = require('../models/produto')
 const FotoProduto = require('../models/fotosDoProduto')
 const fs = require("fs")
+const sharp = require('sharp');
 
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
@@ -42,7 +43,7 @@ router.post('/add/post',upload.single("foto1"),async (req,res)=>{
       res.render("fornecedor/adicionarProduto.ejs",{erros})
   } else {
     let idProd = uuidv4()
-    const imagem = req.file.buffer
+    let imagem = req.file.buffer
     try {
       const produto = await Produto.create({
         id: idProd,
@@ -52,7 +53,13 @@ router.post('/add/post',upload.single("foto1"),async (req,res)=>{
         descricao:req.body.descricao,
         fornecedor_id:req.body.id
       })
-      const imagensSalvas = await FotoProduto.create({id : uuidv4(), foto : imagem, produto_id: idProd, tipo:req.file.mimetype})
+      sharp(imagem).resize({ width: 300 }).toBuffer((err,imagemRedimensionada,info)=>{
+        console.log(info)
+        imagem = imagemRedimensionada
+        FotoProduto.create({id : uuidv4(), foto : imagem, produto_id: idProd, tipo:req.file.mimetype})
+      })
+
+      // fazer o mesmo com outros oploads
       req.flash("success_msg","Produto criado com sucesso")
       res.redirect("/fornecedor/produtos")
     } catch (error) {
@@ -109,9 +116,13 @@ router.post("/update", async(req,res)=>{
   }
 })
 //atualizar foto do produto
-router.post("/update/foto", upload.single('foto1'), async (req, res)=>{
+router.post("/update/foto", upload.single('foto1'), (req, res)=>{
   const imagem = req.file.buffer
-  await FotoProduto.update({foto : imagem, tipo:req.file.mimetype},{ where :{ produto_id : req.body.id }})
+  sharp(imagem).resize({ width: 300 }).toBuffer((err,imagemRedimensionada,info)=>{
+    console.log(info)
+    imagem = imagemRedimensionada
+    FotoProduto.update({foto : imagem, tipo:req.file.mimetype},{ where :{ produto_id : req.body.id }})
+  })
 
   res.redirect("/fornecedor/produtos/"+req.body.id)
 })

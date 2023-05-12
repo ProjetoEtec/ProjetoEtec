@@ -18,6 +18,8 @@ router.get('/for/cadastro', (req, res) => {
  * funcoes assincronas para colocar os dados no banco de dados
  * em vez de aninhar tudo 
  * */ 
+
+// AQUI NESSA PARTE, OS DADOS VÃO SER GUARDADOS NUM OBJETO, E DEEEPOIS DE TODOS OS PASSOS, VÃO PARA O BANCO DE DADOS
 router.post('/for/cadastro/add',(req,res)=>{
   erros = []
   if(!req.body.razao_social){
@@ -75,8 +77,8 @@ router.post('/for/cadastro/add',(req,res)=>{
               id:uuidv4(),
               fornecedor_id:id
             })
-            req.flash("success_msg","Conta criada com sucesso, logue para ter acesso")
-            res.redirect('/login')
+            req.flash("success_msg","Adicione um endereço para sua loja")
+            res.redirect('/for/endereco')
           }).catch((err)=>{
             res.send("Houve um erro ao criar o usuario"+err)
           })
@@ -87,6 +89,14 @@ router.post('/for/cadastro/add',(req,res)=>{
     })
   }
 })
+
+router.get("/for/endereco",(req, res)=>{
+  res.render("pages/endereco")
+})
+router.post("/for/endereco",(req, res)=>{
+
+})
+
 //cadastro cliente
 router.get('/cli/cadastro', (req, res) =>{
   res.render('cliente/cadastro', {erros:erros});
