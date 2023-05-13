@@ -49,7 +49,7 @@
               <input type="file" name="banner" id="banner" accept="image/*" class="form-control" required>
               <button type="submit" class="btn btn-success mt-2">Alterar banner</button>
             </form>
-            <form action="" method="post" class="mt-4">
+            <form action="/forneced" method="post" class="mt-4">
               <input type="hidden" name="id" value="<%=fornecedor.id%>">
               <label for="logo">Alterar descrição</label>
               <textarea type="text" name="descricao_loja" id="descricao_loja" class="form-control" required></textarea>
@@ -59,45 +59,34 @@
         </div>
       </div>
     </div>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
-    <h2 class="mt-4">Divisão</h2>
+    <div>
 
+    <div class="">
+      <h2 class="mt-4">Meus produtos</h2>
+      <a href="/fornecedor/produtos/add" class="btn btn-success mt-2">Adicionar produto</a>
+    </div>
+    <div class="row row-cols-4">
+      <% for(let i = 0 ; i < produto.length ; i++) { %>
+          <div class="col-6 col-md-3">
+              <div class="card cartao">
+                  <img src="data:<%= produto[i].fotoProdutos[0].tipo %>;base64,<%= produto[i].fotoProdutos[0].foto.toString('base64')%>" class="img-produto p-2" alt="..." />
+                  <div class="card-body">
+                      <% let nome = produto[i].nome %>
+                      <%if(nome.length > 18) { %>
+                        <h5><%=nome.slice(0,20)%>...</h5>
+                      <% } else { %>
+                        <h5><%=nome%></h5>
+                      <% } %>
+                      <%const valor = produto[i].preco %> 
+                      <%const valorFormatado = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); %> 
+                      <p><%=valorFormatado%></p>  
+                      <a href="produtos/<%=produto[i].id%>" class="text-decoration-none text-dark">
+                          <button class="btn btn-success">Ver mais</button>
+                      </div>
+                  </a>
+              </div>
+          </div>
+      <% } %> 
+    </div>
+  
     <%- include('../partials/footer') %>

@@ -113,8 +113,10 @@ router.post('/banner',upload.single("banner"),(req, res) => {
     })
   })
 })
-router.post('/descricao',(req, res) => {
-  
+router.post('/descricao',async (req, res) => {
+  await Fornecedor.update({descricao: req.body.descricao_loja},{where: { id: req.user.id }})
+
+  res.redirect("/fornecedor/minha-loja")
 })
 
 
@@ -130,9 +132,16 @@ router.get('/minha-loja',async (req, res) => {
     model:Logo,
     required:true
   }]})
+  const produtos = await Produto.findAll({
+    where: {fornecedor_id: req.user.id},
+    include: [{
+      model:FotoProduto,
+      required:true
+    }]
+  })
   // console.log(fornecedor.banner)
   // res.send(fornecedor)
-  res.render('fornecedor/lojaFornecedor',{fornecedor})
+  res.render('fornecedor/lojaFornecedor',{fornecedor:fornecedor,produto:produtos})
 })
 
 module.exports = router

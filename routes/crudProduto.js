@@ -10,18 +10,6 @@ const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
 let erros = []
-//ver todos os produtos
-router.get('/', async (req, res) => {
-    Produto.findAll({
-      where:{fornecedor_id:req.user.id},
-      include:[{
-        model:FotoProduto,
-        required:true
-      }]
-    }).then((produto)=>{
-      res.render('fornecedor/meusprodutos.ejs',{produto:produto});
-    })
-})
 //adicionar produtos
 router.get('/add', (req, res) => {
   res.render('fornecedor/adicionarproduto.ejs',{erros});
@@ -61,14 +49,14 @@ router.post('/add/post',upload.single("foto1"),async (req,res)=>{
 
       // fazer o mesmo com outros oploads
       req.flash("success_msg","Produto criado com sucesso")
-      res.redirect("/fornecedor/produtos")
+      res.redirect("/fornecedor/minha-loja")
     } catch (error) {
       res.status(500).send("erro ao salvar o produto" + error)
     }
   }
 })
 //ver um produto só
-router.get("/:id",(req,res)=>{
+router.get("/:id", (req,res)=>{
   Produto.findOne({where:{id:req.params.id},include:[{
     model:FotoProduto,
     required:true
@@ -109,7 +97,7 @@ router.post("/update", async(req,res)=>{
         where:{ id : req.body.id }
       })
       req.flash("success_msg","Produto atualizado com sucesso")
-      res.redirect("/fornecedor/produtos")
+      res.redirect("/fornecedor/minha-loja")
     } catch (error) {
       res.status(500).send("erro ao salvar o produto" + error)
     }
@@ -117,14 +105,13 @@ router.post("/update", async(req,res)=>{
 })
 //atualizar foto do produto
 router.post("/update/foto", upload.single('foto1'), (req, res)=>{
-  const imagem = req.file.buffer
+  let imagem = req.file.buffer
   sharp(imagem).resize({ width: 300 }).toBuffer((err,imagemRedimensionada,info)=>{
     console.log(info)
     imagem = imagemRedimensionada
     FotoProduto.update({foto : imagem, tipo:req.file.mimetype},{ where :{ produto_id : req.body.id }})
   })
-
-  res.redirect("/fornecedor/produtos/"+req.body.id)
+    res.redirect("/fornecedor/minha-loja")
 })
 
 router.get("/delete/:id",async(req,res)=>{
@@ -140,10 +127,10 @@ router.get("/delete/:id",async(req,res)=>{
       }
     })
     req.flash("success_msg","Produto deletado com sucesso")
-    res.redirect('/fornecedor/produtos')
+    res.redirect('/fornecedor/minha-loja')
   } catch (error) {
     req.flash("error_msg","Houve um erro ao deletar o produto")
-    res.redirect('/fornecedor/produtos')
+    res.redirect('/fornecedor/minha-loja')
   }
 })
 

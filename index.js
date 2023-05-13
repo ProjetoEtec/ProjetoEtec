@@ -1,197 +1,208 @@
-const express = require('express');
-const path = require('path');
-const app = express();
+const express = require('express')
+const path = require('path')
+const app = express()
 const cliente = require('./routes/cliente')
 const fornecedor = require('./routes/fornecedor')
 const cadastroUser = require('./routes/cadastroUsuario')
-const Fornecedor = require('./models/Fornecedor');
-const Logo = require('./models/logo');
-const Banner = require('./models/banner');
-const { sequelize,Sequelize } = require('./models/db');
-const Login = require('./models/login');
-const Produto = require('./models/produto');
+const Fornecedor = require('./models/Fornecedor')
+const Logo = require('./models/logo')
+const Banner = require('./models/banner')
+const { sequelize, Sequelize } = require('./models/db')
+const Login = require('./models/login')
+const Produto = require('./models/produto')
 const session = require('express-session')
-var SequelizeStore = require("connect-session-sequelize")(session.Store);
-const flash = require("connect-flash")
-const passport = require("passport")
-const FotoProduto = require('./models/fotosDoProduto');
-const extendDefaultFields =  require('./models/session');
+var SequelizeStore = require('connect-session-sequelize')(session.Store)
+const flash = require('connect-flash')
+const passport = require('passport')
+const FotoProduto = require('./models/fotosDoProduto')
+const extendDefaultFields = require('./models/session')
 // cuidado !! isso é somente para atualizar todas as tabelas do banco de dados!!
 // // require('./models/updatedb')
 
 require('./config/auth')(passport)
 
 //Configurações
-    //sessão
-    app.use(session({
-        secret: 'wqeopiwqe',
-        resave: false,
-        store: new SequelizeStore({
-          db: sequelize
-        }),
-        saveUninitialized:false,
-        cookie: { maxAge: 50 * 60 * 1000 } // 50 minutos
-    }))
-    app.use(passport.initialize());
-    app.use(passport.session());
-    app.use(flash())
-    //middleware
-    app.use((req, res, next) =>{
-        res.locals.success_msg = req.flash("success_msg")
-        res.locals.error_msg = req.flash("error_msg")
-        res.locals.user = req.user || null
-        next()
-    })
-    function isClienteAutheticated(req, res, next) {
-      if (req.isAuthenticated()){
-        if(req.user.type_user == "cliente") return next()
-      };
-      req.flash("error_msg","Logue na sua conta como cliente")
-      res.redirect('/login?fail=true');
-    }
-    function isFornecedorAutheticated(req, res, next) {
-      if (req.isAuthenticated()){
-        if(req.user.type_user == "fornecedor") return next()
-      };
-      req.flash("error_msg","Logue na sua conta como fornecedor")
-      res.redirect('/login?fail=true');
-    }
-    //Template engine
-    app.set('view engine', 'ejs');
-    app.set('views', path.join(__dirname,'views'))
+//sessão
+app.use(
+  session({
+    secret: 'wqeopiwqe',
+    resave: false,
+    store: new SequelizeStore({
+      db: sequelize
+    }),
+    saveUninitialized: false,
+    cookie: { maxAge: 90 * 60 * 1000 } // 90 minutos
+  }))
+  app.use(passport.session());
+  app.use(passport.initialize())
+  app.use(flash())
+//middleware
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.error_msg = req.flash('error_msg')
+  res.locals.user = req.user || null
+  next()
+})
+//middleware
+function isClienteAutheticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    if (req.user.type_user == 'cliente') return next()
+  }
+  req.flash('error_msg', 'Logue na sua conta como cliente')
+  res.redirect('/login')
+}
+function isFornecedorAutheticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    if (req.user.type_user == 'fornecedor') return next()
+  }
+  req.flash('error_msg', 'Logue na sua conta como fornecedor')
+  res.redirect('/login')
+}
+//Template engine
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
 
-    //Public
-    app.use(express.static(path.join(__dirname, 'public')));
-    //body parser
-    app.use(express.json()) 
-    app.use(express.urlencoded({extended:false}))
+//Public
+app.use(express.static(path.join(__dirname, 'public')))
+//body parser
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 
 // rotas
-app.use('/cliente',isClienteAutheticated,cliente)
-app.use('/fornecedor',isFornecedorAutheticated,fornecedor)
-app.use('/',cadastroUser)
+app.use('/cliente', isClienteAutheticated, cliente)
+app.use('/fornecedor', isFornecedorAutheticated, fornecedor)
+app.use('/', cadastroUser)
 app.get('/', async (req, res) => {
+  let a = req.flash("error")
   const fornecedores = await Fornecedor.findAll({
-    include:[{
-      model:Logo
-    }]
+    include: {model: Logo}
   })
   const produtos = await Produto.findAll({
-    include:[{
-      model:FotoProduto,
-      required:true
-    }],
-    order: Sequelize.literal("rand()"),
-    limit:20})
-  try{
-    // console.log(produtos)
-    res.render('index.ejs',{
-      fornecedores:fornecedores,
-      produtos:produtos
-    });  
-  } catch ( err ) {
-    res.send( err.message )
+    include: {
+        model: FotoProduto,
+        required: true
+      },
+    order: Sequelize.literal('rand()'),
+    limit: 20
+  })
+  try {
+    res.render('index.ejs', {
+      fornecedores: fornecedores,
+      produtos: produtos
+    })
+  } catch (err) {
+    res.send(err.message)
   }
 })
 
-app.get('/produto', (req, res) => { 
-    res.render('pages/produto.ejs'); 
+app.get('/produto', (req, res) => {
+  res.render('pages/produto.ejs')
 })
 
-app.get('/loja-unica/:id',async (req, res) => {
+app.get('/loja-unica/:id', async (req, res) => {
   let fornecedor = await Fornecedor.findOne({
-    where:{id:req.params.id},
-    include : [{
-      model:Logo,
-      required: true
-    },{
-      model:Banner,
-      required: true
-    }]
+    where: { id: req.params.id },
+    include: [
+      {
+        model: Logo,
+        required: true
+      },
+      {
+        model: Banner,
+        required: true
+      }
+    ]
   })
   let produtos = await Produto.findAll({
-    where:{fornecedor_id : req.params.id},
-    include:[{
-      model:FotoProduto,
-      required:true
-    }]
+    where: { fornecedor_id: req.params.id },
+    include: {
+        model: FotoProduto,
+        required: true
+      }
   })
-  res.render('pages/loja.ejs',{fornecedor:fornecedor,produtos:produtos});
+  res.render('pages/loja.ejs', { fornecedor: fornecedor, produtos: produtos })
 })
 
-app.get('/login', (req, res) =>{
-  res.render('pages/login');
-});
-
-app.post('/login', passport.authenticate('login'), (req, res) =>{
-  res.redirect('/')
+app.get('/login', (req, res) => {
+  res.render('pages/login')
 })
 
-app.get('/logout',(req,res)=>{
-  req.logout((err)=>{
-    if(err){return next(err)}
-    req.flash("success_msg","deslogado com sucesso")
-    res.redirect("/")
+app.post('/login', passport.authenticate('login', {
+  successRedirect: '/fornecedor/minha-loja',
+  failureRedirect: '/login',
+  failureFlash: true ,
+  failureMessage:"Usuario ou senha errados"}))
+
+app.get('/logout', (req, res) => {
+  req.logout(err => {
+    if (err) {
+      return next(err)
+    }
+    console.log(flash('success_msg', 'deslogado com sucesso'))
+    res.redirect('/')
   })
 })
 
-app.get('/update/senha/:id',(req,res)=>{
+app.get('/update/senha/:id', (req, res) => {
   erros = []
 
   Login.findOne({
-    where:{
+    where: {
       id: req.params.id
     }
-  }).then((login)=>{
+  }).then(login => {
     res.render('pages/alterarsenha', {
-      login:login,
-      erros:erros
+      login: login,
+      erros: erros
     })
   })
 })
 
-app.post('/update/senha/func',(req,res)=>{
+app.post('/update/senha/func', (req, res) => {
   erros = []
-  if(!req.body.senha_antiga || !req.body.senha_nova){
-    erros.push({texto:"Senha inválida"})
+  if (!req.body.senha_antiga || !req.body.senha_nova) {
+    erros.push({ texto: 'Senha inválida' })
   }
-  if(erros.length > 0 ){
-    req.flash("error_msg","Senha inválida")
-    res.redirect("/update/senha/"+req.body.id)
+  if (erros.length > 0) {
+    req.flash('error_msg', 'Senha inválida')
+    res.redirect('/update/senha/' + req.body.id)
   } else {
     Login.findOne({
-      where:{
+      where: {
         id: req.body.id
       }
-    }).then((login)=>{
-      if(login.senha != req.body.senha_antiga){
-        erros.push({texto:"Senha errada"})
+    }).then(login => {
+      if (login.senha != req.body.senha_antiga) {
+        erros.push({ texto: 'Senha errada' })
       }
-      if(!req.body.senha_antiga){
-        erros.push({texto:"Digite uma nova senha"})
+      if (!req.body.senha_antiga) {
+        erros.push({ texto: 'Digite uma nova senha' })
       }
-      if(erros.length > 0){
+      if (erros.length > 0) {
         res.render('pages/alterarsenha', {
-          login:login,
-          erros:erros
+          login: login,
+          erros: erros
         })
-      } else{
-        Login.update({
-          senha:req.body.senha_nova
-        }, {
-          where:{
-            id:req.body.id
+      } else {
+        Login.update(
+          {
+            senha: req.body.senha_nova
+          },
+          {
+            where: {
+              id: req.body.id
+            }
           }
-        })
-        req.flash("success_msg","Senha alterada com sucesso!")
-        res.redirect('/cliente/update/'+login.id)
+        )
+        req.flash('success_msg', 'Senha alterada com sucesso!')
+        res.redirect('/cliente/update/' + login.id)
       }
-      erros =[]
+      erros = []
     })
   }
 })
 
-const PORT = 3000;
-app.listen(PORT, ()=>{
-    console.log('Servidor rodando na porta '+PORT);
-});
+const PORT = 3000
+app.listen(PORT, () => {
+  console.log('Servidor rodando na porta ' + PORT)
+})

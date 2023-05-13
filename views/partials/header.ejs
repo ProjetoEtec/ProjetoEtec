@@ -13,8 +13,6 @@
           <li class="nav-item">
             <a class="nav-link" href="/login">Login</a>
           </li> 
-          <% } %>
-          <% if (user == null ) { %>
           <li class="nav-item">
             <a class="nav-link" href="/carrinho">Carrinho</a>
           </li>
@@ -23,9 +21,6 @@
               <a class="nav-link" href="/carrinho">Carrinho</a>
             </li>
           <% } else if (user.type_user == "fornecedor") { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/fornecedor/produtos">Meus produtos</a>
-            </li>
             <li class="nav-item">
               <a class="nav-link" href="/fornecedor/minha-loja">Minha loja</a>
             </li>

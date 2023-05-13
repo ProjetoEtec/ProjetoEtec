@@ -1,0 +1,110 @@
+<!--
+    Copyright 2021 Google LLC
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  <%- include('../partials/head') %>
+<%- include('../partials/header') %>
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <script>
+      "use strict";
+  
+      function initMap() {
+        const CONFIGURATION = {
+          "ctaTitle": "CONFIRMAR",
+          "mapOptions": {"center":{"lat":37.4221,"lng":-122.0841},"fullscreenControl":true,"mapTypeControl":false,"streetViewControl":true,"zoom":14,"zoomControl":true,"maxZoom":22,"mapId":""},
+          "mapsApiKey": "AIzaSyCGbACPfPrwB1a2AAA7csQ4BTR3ZB36uoY",
+          "capabilities": {"addressAutocompleteControl":true,"mapDisplayControl":false,"ctaControl":true}
+        };
+        const componentForm = [
+          'location',
+          'locality',
+          'administrative_area_level_1',
+          'country',
+          'postal_code',
+        ];
+  
+        const getFormInputElement = (component) => document.getElementById(component + '-input');
+        const autocompleteInput = getFormInputElement('location');
+        const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
+          fields: ["address_components", "geometry", "name"],
+          types: ["address"],
+        });
+        autocomplete.addListener('place_changed', function () {
+          const place = autocomplete.getPlace();
+          if (!place.geometry) {
+            // User entered the name of a Place that was not suggested and
+            // pressed the Enter key, or the Place Details request failed.
+            window.alert('No details available for input: \'' + place.name + '\'');
+            return;
+          }
+          fillInAddress(place);
+        });
+  
+        function fillInAddress(place) {  // optional parameter
+          const addressNameFormat = {
+            'street_number': 'short_name',
+            'route': 'long_name',
+            'locality': 'long_name',
+            'administrative_area_level_1': 'short_name',
+            'country': 'long_name',
+            'postal_code': 'short_name',
+          };
+          const getAddressComp = function (type) {
+            for (const component of place.address_components) {
+              if (component.types[0] === type) {
+                return component[addressNameFormat[type]];
+              }
+            }
+            return '';
+          };
+          getFormInputElement('location').value = getAddressComp('street_number') + ' '
+                    + getAddressComp('route');
+          for (const component of componentForm) {
+            // Location field is handled separately above as it has different logic.
+            if (component !== 'location') {
+              getFormInputElement(component).value = getAddressComp(component);
+            }
+          }
+        }
+      }
+      </script>
+    </head>
+    <body>
+      <div class="card p-5 mt-4">
+        <div class="panel">
+          <div >
+            <img class="sb-title-icon" src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg" alt="">
+            <span class="sb-title">Adicione seu Endereço</span>
+          </div>
+          <form action="" method="post">
+            <input type="text" placeholder="Rua" id="location-input" class="form-control mt-1"/>
+            <input type="text" placeholder="Complemento" class="form-control mt-1"/>
+            <input type="text" placeholder="Cidade" id="locality-input" class="form-control mt-1"/>
+            <div class="half-input-container col-6 col-md-4">
+              <input type="text" class="half-input form-control mt-1" placeholder="UF" id="administrative_area_level_1-input"/>
+              <input type="text" class="half-input form-control mt-1" placeholder="CEP" id="postal_code-input"/>
+            </div>
+            <input type="text" placeholder="País" id="country-input" class="form-control mt-1"/>
+            <input type="text" placeholder="Número" id="numero_casa" class="form-control mt-1">
+            <button class="button-cta btn btn-success mt-4">CONFIRMAR</button>
+          </form>
+        </div>
+      </div>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGbACPfPrwB1a2AAA7csQ4BTR3ZB36uoY&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cAC" async defer></script>
+    </body>
+  </html>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGbACPfPrwB1a2AAA7csQ4BTR3ZB36uoY&libraries=places&callback=initMap&solution_channel=GMP_QB_addressselection_v1_cABC" async defer></script>
+  <%- include('../partials/footer') %>
