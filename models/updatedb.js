@@ -5,6 +5,7 @@
 // const login = require('./login')
 // const logo = require('./logo')
 // const produto = require('./produto')
+// const Session = require('./session')
 
 // banner.sync({force:true})
 // fornecedor.sync({force:true})
@@ -13,3 +14,4 @@
 // login.sync({force:true})
 // logo.sync({force:true})
 // produto.sync({force:true})
+// Session.sync({force:true})
