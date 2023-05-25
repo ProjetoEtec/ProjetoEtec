@@ -1,7 +1,9 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 <%- include('../partials/_msg') %>
-
+<% if (messages != "") { %>
+    <div class="alert alert-danger"><%=messages%></div>
+<% } %>
 
 <div class="card mt-5">
     <div class="card-body p-5">
@@ -13,7 +15,7 @@
             </div>
             <div>
                 <label for="senha">Senha</label>
-                <input type="text" class="mt-2 form-control" name="senha" id="senha" value="123">     
+                <input type="password" class="mt-2 form-control" name="senha" id="senha" value="123">     
             </div>    
             <button type="submit" class="btn btn-success mt-4">Entrar</button>
         </form>

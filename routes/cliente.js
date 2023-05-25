@@ -49,7 +49,9 @@ router.post('/update/func',(req,res)=>{
       where:{ id : req.body.id }
     }).then(()=>{
       req.flash("success_msg","Conta Atualizada com sucesso")
-      res.redirect('/cliente/update/'+req.body.id)
+      req.session.save(()=>{
+        res.redirect('/cliente/update/'+req.body.id)
+      })
     }).catch(()=>{
       res.send("Houve um erro ao atualizar a conta")
     })
@@ -68,7 +70,9 @@ router.get('/delete/:id',(req,res)=>{
       }
     }).then(()=>{
       req.flash("success_msg","Conta deletada com sucesso")
-      res.redirect('/')
+      req.session.save(()=>{
+        res.redirect('/')
+      })
     }).catch(()=>{
       res.send("Houve um erro ao deletar a conta")
     })

@@ -41,6 +41,9 @@ app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg')
   res.locals.error_msg = req.flash('error_msg')
   res.locals.user = req.user || null
+  if(!req.session.carrinho){
+    req.session.carrinho=[]
+  } 
   next()
 })
 //middleware
@@ -48,15 +51,26 @@ function isClienteAutheticated(req, res, next) {
   if (req.isAuthenticated()) {
     if (req.user.type_user == 'cliente') return next()
   }
-  req.flash('error_msg', 'Logue na sua conta como cliente')
-  res.redirect('/login')
+  req.session.save(()=>{
+    res.redirect('/login')
+  })
 }
 function isFornecedorAutheticated(req, res, next) {
   if (req.isAuthenticated()) {
     if (req.user.type_user == 'fornecedor') return next()
   }
   req.flash('error_msg', 'Logue na sua conta como fornecedor')
-  res.redirect('/login')
+  req.session.save(()=>{
+    res.redirect('/login')
+  })
+}
+function isNotFornecedor(req, res, next) {
+  if (req.isAuthenticated()) {
+    if (req.user.type_user != 'fornecedor') return next()
+    res.redirect('/fornecedor/minha-loja')
+  } else {
+    return next()
+  }
 }
 //Template engine
 app.set('view engine', 'ejs')
@@ -72,8 +86,16 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/cliente', isClienteAutheticated, cliente)
 app.use('/fornecedor', isFornecedorAutheticated, fornecedor)
 app.use('/', cadastroUser)
-app.get('/', async (req, res) => {
-  let a = req.flash("error")
+app.post('/carrinho/add',(req, res) => {  
+  req.session.carrinho.push({id:req.body.id,qtd:Number(req.body.qtd)})
+
+  req.flash('success_msg','produto add com sucesso')
+  req.session.save(()=>{
+    res.redirect('back')
+  })
+})
+app.get('/', isNotFornecedor ,async (req, res) => {
+ 
   const fornecedores = await Fornecedor.findAll({
     include: {model: Logo}
   })
@@ -124,22 +146,26 @@ app.get('/loja-unica/:id', async (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-  res.render('pages/login')
+  if(req.query.fail){
+    res.render('pages/login',{messages: "Usuario e/ou senha incorretos!"})
+  } else {
+    res.render('pages/login',messages = "")
+  }
 })
 
 app.post('/login', passport.authenticate('login', {
-  successRedirect: '/fornecedor/minha-loja',
-  failureRedirect: '/login',
-  failureFlash: true ,
-  failureMessage:"Usuario ou senha errados"}))
+  successRedirect: '/',
+  failureRedirect: '/login?fail=true'}))
 
 app.get('/logout', (req, res) => {
   req.logout(err => {
     if (err) {
       return next(err)
     }
-    console.log(flash('success_msg', 'deslogado com sucesso'))
-    res.redirect('/')
+    req.flash('success_msg', 'Deslogado com sucesso')
+    req.session.save(()=>{
+      res.redirect('/')
+    })
   })
 })
 
@@ -164,8 +190,7 @@ app.post('/update/senha/func', (req, res) => {
     erros.push({ texto: 'Senha inválida' })
   }
   if (erros.length > 0) {
-    req.flash('error_msg', 'Senha inválida')
-    res.redirect('/update/senha/' + req.body.id)
+    res.redirect('back')
   } else {
     Login.findOne({
       where: {
@@ -195,7 +220,9 @@ app.post('/update/senha/func', (req, res) => {
           }
         )
         req.flash('success_msg', 'Senha alterada com sucesso!')
-        res.redirect('/cliente/update/' + login.id)
+        req.session.save(()=>{
+          res.redirect('/')
+        })
       }
       erros = []
     })

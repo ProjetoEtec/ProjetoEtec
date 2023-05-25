@@ -54,7 +54,9 @@ router.post('/for/cadastro/add',(req,res)=>{
     }).then((login)=>{
       if(login){
         req.flash("error_msg","Email já cadastrado")
-        res.redirect('/for/cadastro')
+        req.session.save(()=>{
+          res.redirect('/for/cadastro')
+        })
       } else {
         Fornecedor.create({
           id:id,
@@ -143,7 +145,9 @@ router.post('/cli/cadastro/add',(req,res)=>{
     }).then((login)=>{
       if(login){
         req.flash("error_msg","Email já cadastrado")
-        res.redirect('/cli/cadastro')
+        req.session.save(()=>{
+          res.redirect('/cli/cadastro')
+        })
       } else {
       Cliente.create({
         id:id,
@@ -159,7 +163,9 @@ router.post('/cli/cadastro/add',(req,res)=>{
           type_user: "cliente"
         }).then(()=>{
           req.flash("success_msg","Conta criada com sucesso, logue para ter acesso")
-          res.redirect('/')
+          req.session.save(()=>{
+            res.redirect('/')
+          })
         }).catch((err)=>{
           res.send("Houve um erro ao criar o usuario"+err)
         })
