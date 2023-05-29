@@ -8,6 +8,7 @@ const Fornecedor = require('./models/Fornecedor')
 const Logo = require('./models/logo')
 const Banner = require('./models/banner')
 const { sequelize, Sequelize } = require('./models/db')
+const { Op } = require('sequelize');
 const Login = require('./models/login')
 const Produto = require('./models/produto')
 const session = require('express-session')
@@ -51,6 +52,7 @@ function isClienteAutheticated(req, res, next) {
   if (req.isAuthenticated()) {
     if (req.user.type_user == 'cliente') return next()
   }
+  req.flash('error_msg', 'Logue na sua conta como cliente')
   req.session.save(()=>{
     res.redirect('/login')
   })
@@ -94,6 +96,24 @@ app.post('/carrinho/add',(req, res) => {
     res.redirect('back')
   })
 })
+app.get('/carrinho', async (req, res) => {
+  let lista = req.session.carrinho
+  let lista1 = Object.keys(lista).map(key =>lista[key].id)
+  let produtos = await Produto.findAll({
+    include: {
+      model: FotoProduto,
+      required: true
+    }, 
+    where: {
+      id:{
+        [Op.in]: lista1
+      }
+    }
+  })
+  console.log(produtos[0].fotoProdutos)
+  res.render('cliente/carrinho.ejs', {produtos,lista});
+})
+
 app.get('/', isNotFornecedor ,async (req, res) => {
  
   const fornecedores = await Fornecedor.findAll({

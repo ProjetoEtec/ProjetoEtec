@@ -176,8 +176,4 @@ router.post('/cli/cadastro/add',(req,res)=>{
   }
 })
 
-router.get('/carrinho', (req, res) => {
-  res.render('cliente/carrinho.ejs');
-})
-
 module.exports = router

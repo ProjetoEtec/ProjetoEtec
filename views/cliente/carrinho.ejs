@@ -6,49 +6,28 @@
 <div class="card container">
   <h2 class="mt-4">Produtos</h2>
   <form action="post" >
+    <% produtos.forEach((produto,index) => { %>
     <div class="card mt-4">
       <h3 class="ms-4 mt-4">Loja 1</h3>
 
       <!-- Produtos -->
-      <div class="m-2 m-md-4 row">
-        <div class="col-md-4">
-          <img src="/img/gin.jpg" alt="" class="img-fluid" />
-        </div>
-        <div class="col-md-8">
-          <h3>$Nome do produto$</h3>
-          <div class="mt-4 d-flex-md">
-            <label for="qtd">Quantidade: </label>
-            <input type="text" name="qtd" class="w-50 form-control" />
-            <label>Preço: </label>
-            <input class="w-50 form-control" />
+        <div class="m-2 m-md-4 row">
+          <div class="col-md-4">
+            <img src="data:<%=produto.fotoProdutos%>;base64,<%=produto.fotoProdutos[0].foto.toString('base64')%>" alt="" class="img-fluid" />
+          </div>
+          <div class="col-md-8">
+            <h3 class="mt-2"><%= produto.nome%></h3>
+            <div class="mt-4 d-flex-md">
+              <label for="qtd">Quantidade: </label>
+              <input type="text" name="qtd" class="w-50 form-control" value="<%=lista[index].qtd%>"/>
+              <h5 class="mt-2">Preço unitário: <%=produto.preco%></h5>
+            </div>
           </div>
         </div>
+  
+        <p class="ms-4 fs-4 mt-2">Total do produto: 99.99</p>
       </div>
-
-      <p class="ms-4 fs-4">Preço: 99.99</p>
-    </div>
-
-    <div class="card mt-4">
-      <h3 class="ms-4 mt-4">Loja 1</h3>
-
-      <!-- Produtos -->
-      <div class="m-4 row">
-        <div class="col-md-4">
-          <img src="/img/gin.jpg" alt="" class="img-fluid" />
-        </div>
-        <div class="col-md-8">
-          <h3>$Nome do produto$</h3>
-          <div class="mt-4 d-flex-md">
-            <label for="qtd">Quantidade: </label>
-            <input type="text" name="qtd" class="w-50 form-control" />
-            <label for="preco">Preço: </label>
-            <input type="text" name="preco" class="w-50 form-control" />
-          </div>
-        </div>
-      </div>
-
-      <p class="ms-4 fs-4">Preço: 99.99</p>
-    </div>
+      <% }) %>
 
     <!-- asdsd -->
 
