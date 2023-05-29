@@ -19,7 +19,11 @@
             <h3 class="mt-2"><%= produto.nome%></h3>
             <div class="mt-4 d-flex-md">
               <label for="qtd">Quantidade: </label>
-              <input type="text" name="qtd" class="w-50 form-control" value="<%=lista[index].qtd%>"/>
+              <% for(let i = 0; i < lista.length; i++) { %>
+                <% if(produto.id == lista[i].id) { %>
+                  <input type="text" name="qtd" class="w-50 form-control" value="<%=lista[i].qtd%>"/>
+                <% } %>
+              <% } %>
               <h5 class="mt-2">Preço unitário: <%=produto.preco%></h5>
             </div>
           </div>
