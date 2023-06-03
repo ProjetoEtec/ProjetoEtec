@@ -7,7 +7,7 @@
   <h2 class="mt-4">Produtos</h2>
   <form action="post" >
     <% produtos.forEach((produto,index) => { %>
-    <div class="card mt-4">
+    <div class="card mt-4 produto">
       <h3 class="ms-4 mt-4">Loja 1</h3>
 
       <!-- Produtos -->
@@ -21,31 +21,93 @@
               <label for="qtd">Quantidade: </label>
               <% for(let i = 0; i < lista.length; i++) { %>
                 <% if(produto.id == lista[i].id) { %>
-                  <input type="text" name="qtd" class="w-50 form-control" value="<%=lista[i].qtd%>"/>
+                  <input type="hidden" value="<%=produto.id%>" class="productId">
+                  <input type="number" name="qtd" class="w-50 form-control qtd" value="<%=lista[i].qtd%>" id="qtd<%=index%>" min="0" max="<%=produto.estoque%>"/>
                 <% } %>
               <% } %>
-              <h5 class="mt-2">Preço unitário: <%=produto.preco%></h5>
             </div>
+            <p>Preço unitário: <span id="precoUnit<%=index%>"><%=produto.preco%></span></p>
+            <p>Quantidade do estoque: <span class="estoque"><%=produto.estoque%></span></p>
           </div>
         </div>
-  
-        <p class="ms-4 fs-4 mt-2">Total do produto: 99.99</p>
+        <div class="d-flex justify-content-between m-3">
+          <p>Total do produto: <span id="totalProduto<%=index%>" class="totalProdutos"></span></p>
+          <button class="remove-product-button btn btn-danger" type="button">Remover produto</button>
+        </div>
       </div>
       <% }) %>
-
+      <% if(!produtos[0]) { %>
+        <p class="m-3">Não tem produtos? Adicione algum para aparecer aqui. <a href="#" onclick="window.history.back()">Voltar</a></p>
+        
+      <% } else { %>
+        <div class="mt-4 row">
+          <h4 class="col-md-4" >Total do Pedido: <span id="totalPedido"></span></h4>
+          <div class="d-flex col-md-4 offset-md-4">
+            <p class="me-3">Deseja excluir o pedido?</p>
+            <button class="btn btn-danger" type="button">Excluir</button>
+          </div>
+        </div>
+        <button class="btn btn-success mt-4 btn-lg" type="submit">
+          Efetuar Pedido
+        </button>
+      <% } %>
     <!-- asdsd -->
 
-    <div class="mt-4 row">
-      <h4 class="col-md-4">Total do Pedido: 199.98</h4>
-      <div class="d-flex col-md-4 offset-md-4">
-        <p class="me-3">Deseja excluir o pedido?</p>
-        <button class="btn btn-danger" type="button">Excluir</button>
-      </div>
-    </div>
-    <button class="btn btn-success mt-4 btn-lg" type="submit">
-      Efetuar Pedido
-    </button>
+
   </form>
 </div>
+<script defer>
+  
+  function calcularProduto(i){   
+    let qtd = document.getElementById("qtd"+i)
+    let preco = document.getElementById("precoUnit"+i)
+    let totalProduto = document.getElementById("totalProduto"+i)
 
+    let valor = Number(qtd.value) * Number(preco.innerHTML)
+
+    totalProduto.innerHTML = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+  }
+    let produtos = document.getElementsByClassName("produto")
+    let inputsQtd = document.getElementsByClassName("qtd")
+    let productId = document.getElementsByClassName("productId")
+    let estoque = document.getElementsByClassName("estoque")
+    let totalProdutos = document.getElementsByClassName("totalProdutos")
+    console.log(totalProdutos)
+    function calculaTotal(){
+      let total = 0
+      for(let i= 0;i<totalProdutos.length;i++){
+        valor = totalProdutos[i].innerHTML
+        total += parseFloat(valor.replace(/[^\d.,]/g, "").replace(",", "."))
+        console.log(valor)
+      }
+      console.log(total)
+    }
+    for(let i = 0; i < produtos.length; i++){
+      let valor 
+      let valEstoque
+      inputsQtd[i].addEventListener("input", ()=>{
+        calcularProduto(i)
+        valor = inputsQtd[i].value
+        valEstoque = estoque[i].innerHTML
+        console.log(valor,valEstoque)
+      })
+      inputsQtd[i].addEventListener('blur',()=>{
+        console.log("A")
+        if(Number(valor) < Number(valEstoque)){
+          console.log("b")
+          
+          fetch('/carrinho/edit', {
+            method: 'POST', 
+            headers: {
+              'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify({valor, i : productId[i].value}) 
+          })
+        }
+      })
+      calcularProduto(i)
+      calculaTotal()
+    }
+    
+  </script>
 <%- include('../partials/footer') %>

@@ -17,8 +17,6 @@ const Endereco = db.sequelize.define('endereco', {
   },
   complemento:{
     type: db.Sequelize.STRING
-  },  cep:{
-    type: db.Sequelize.STRING
   }
 })
 // Fornecedor.sync({force:true})

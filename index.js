@@ -88,10 +88,32 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/cliente', isClienteAutheticated, cliente)
 app.use('/fornecedor', isFornecedorAutheticated, fornecedor)
 app.use('/', cadastroUser)
-app.post('/carrinho/add',(req, res) => {  
-  req.session.carrinho.push({id:req.body.id,qtd:Number(req.body.qtd)})
+app.post('/carrinho/add', async (req, res) => {  
+  let adicionou = false 
+  let produto = await Produto.findOne({
+    where: {id : req.body.id},
+    atributes: ["estoque"]
+  })
 
-  req.flash('success_msg','produto add com sucesso')
+  for(let i = 0; i <= req.session.carrinho.length; i++){
+    if(req.session.carrinho[i]){
+      if(req.session.carrinho[i].id == req.body.id){
+        req.session.carrinho[i].qtd += Number(req.body.qtd)
+        adicionou = true 
+        if(req.session.carrinho[i].qtd > produto.estoque){
+          req.session.carrinho[i].qtd = produto.estoque 
+          req.flash("error_msg","Quantidade máxima do estoque atingida. Contate o fornecedor")
+        } else {
+          req.flash("success_msg","Quantidade do produto atualizada!")
+        }
+      } 
+    }
+  } 
+  if(!adicionou){
+    req.session.carrinho.push({id:req.body.id,qtd:Number(req.body.qtd)})
+    req.flash('success_msg','produto add com sucesso')
+  }
+
   req.session.save(()=>{
     res.redirect('back')
   })
@@ -110,8 +132,24 @@ app.get('/carrinho', async (req, res) => {
       }
     }
   })
-  console.log(produtos[0].fotoProdutos)
+  // console.log(produtos[0].fotoProdutos)
   res.render('cliente/carrinho.ejs', {produtos,lista});
+})
+app.post('/carrinho/edit',async (req,res)=>{
+  let adicionou = false
+  for(let i = 0; i < req.session.carrinho.length; i++) {
+    console.log(i)
+    if(req.session.carrinho[i].id == req.body.i){
+      req.session.carrinho[i].qtd = req.body.valor 
+      adicionou = true
+    }
+  }
+  if(adicionou) {
+    res.send("recebido com sucesso")
+  } else {
+    req.flash('error_msg','Não foi possivel adicionar ao carrinho com sucesso')
+    res.send("Erro")
+  }
 })
 
 app.get('/', isNotFornecedor ,async (req, res) => {
