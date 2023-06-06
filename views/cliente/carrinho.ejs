@@ -5,7 +5,6 @@
 <!-- Banco de dados -->
 <div class="card container">
   <h2 class="mt-4">Produtos</h2>
-  <form action="post" >
     <% produtos.forEach((produto,index) => { %>
     <div class="card mt-4 produto">
       <h3 class="ms-4 mt-4">Loja 1</h3>
@@ -22,17 +21,20 @@
               <% for(let i = 0; i < lista.length; i++) { %>
                 <% if(produto.id == lista[i].id) { %>
                   <input type="hidden" value="<%=produto.id%>" class="productId">
-                  <input type="number" name="qtd" class="w-50 form-control qtd" value="<%=lista[i].qtd%>" id="qtd<%=index%>" min="0" max="<%=produto.estoque%>"/>
+                  <input type="number" name="qtd" class="w-50 form-control qtd" value="<%=lista[i].qtd%>" id="qtd<%=index%>" min="1" max="<%=produto.estoque%>"/>
                 <% } %>
               <% } %>
             </div>
-            <p>Preço unitário: <span id="precoUnit<%=index%>"><%=produto.preco%></span></p>
+            <p>Preço unitário: R$ <span id="precoUnit<%=index%>"><%=produto.preco%></span></p>
             <p>Quantidade do estoque: <span class="estoque"><%=produto.estoque%></span></p>
           </div>
         </div>
         <div class="d-flex justify-content-between m-3">
           <p>Total do produto: <span id="totalProduto<%=index%>" class="totalProdutos"></span></p>
-          <button class="remove-product-button btn btn-danger" type="button">Remover produto</button>
+          <form action="/carrinho/delete/<%=produto.id%>" method="post">
+            <input type="hidden" name="id" value="<%=produto.id%>">
+            <button class="remove-product-button btn btn-danger" type="submit">Remover produto</button>
+          </form>
         </div>
       </div>
       <% }) %>
@@ -44,7 +46,10 @@
           <h4 class="col-md-4" >Total do Pedido: <span id="totalPedido"></span></h4>
           <div class="d-flex col-md-4 offset-md-4">
             <p class="me-3">Deseja excluir o pedido?</p>
-            <button class="btn btn-danger" type="button">Excluir</button>
+            <form action="/carrinho/delete" method="post">
+              <input type="hidden" name="">
+              <button class="btn btn-danger" type="submit">Excluir</button>
+            </form>
           </div>
         </div>
         <button class="btn btn-success mt-4 btn-lg" type="submit">
@@ -53,8 +58,6 @@
       <% } %>
     <!-- asdsd -->
 
-
-  </form>
 </div>
 <script defer>
   
@@ -72,21 +75,23 @@
     let productId = document.getElementsByClassName("productId")
     let estoque = document.getElementsByClassName("estoque")
     let totalProdutos = document.getElementsByClassName("totalProdutos")
-    console.log(totalProdutos)
     function calculaTotal(){
+      let totalPedido = document.getElementById("totalPedido")
       let total = 0
-      for(let i= 0;i<totalProdutos.length;i++){
-        valor = totalProdutos[i].innerHTML
-        total += parseFloat(valor.replace(/[^\d.,]/g, "").replace(",", "."))
-        console.log(valor)
+      for(let i= 0;i < totalProdutos.length;i++){
+        let qtd = document.getElementById("qtd"+i)
+        let preco = document.getElementById("precoUnit"+i)
+
+        total += Number(qtd.value) * Number(preco.innerHTML)
       }
-      console.log(total)
+      totalPedido.innerHTML = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
     }
     for(let i = 0; i < produtos.length; i++){
       let valor 
       let valEstoque
       inputsQtd[i].addEventListener("input", ()=>{
         calcularProduto(i)
+        calculaTotal()
         valor = inputsQtd[i].value
         valEstoque = estoque[i].innerHTML
         console.log(valor,valEstoque)

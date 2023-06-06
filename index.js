@@ -94,18 +94,17 @@ app.post('/carrinho/add', async (req, res) => {
     where: {id : req.body.id},
     atributes: ["estoque"]
   })
-
+//voce ja adicionou esse product
   for(let i = 0; i <= req.session.carrinho.length; i++){
     if(req.session.carrinho[i]){
       if(req.session.carrinho[i].id == req.body.id){
-        req.session.carrinho[i].qtd += Number(req.body.qtd)
+        // req.session.carrinho[i].qtd += Number(req.body.qtd)
+        req.flash("error_msg","Você já adicionou esse produto ao carrinho")
         adicionou = true 
         if(req.session.carrinho[i].qtd > produto.estoque){
           req.session.carrinho[i].qtd = produto.estoque 
           req.flash("error_msg","Quantidade máxima do estoque atingida. Contate o fornecedor")
-        } else {
-          req.flash("success_msg","Quantidade do produto atualizada!")
-        }
+        } 
       } 
     }
   } 
@@ -150,6 +149,20 @@ app.post('/carrinho/edit',async (req,res)=>{
     req.flash('error_msg','Não foi possivel adicionar ao carrinho com sucesso')
     res.send("Erro")
   }
+})
+
+app.post("/carrinho/delete/:id", (req,res)=>{
+  let carrinho = req.session.carrinho
+  for(let i = 0; i < req.session.carrinho.length; i++) {
+    console.log(i+"+"+req.params.id)
+    console.log(i+"-"+req.session.carrinho[i].id)
+    if(req.session.carrinho[i].id == req.params.id){
+      req.session.carrinho.splice(i, 1)
+    }
+  }
+  req.session.save(()=>{
+    res.redirect('back')
+  })
 })
 
 app.get('/', isNotFornecedor ,async (req, res) => {
