@@ -50,7 +50,7 @@
               <input type="file" name="banner" id="banner" accept="image/*" class="form-control" required>
               <button type="submit" class="btn btn-success mt-2">Alterar banner</button>
             </form>
-            <form action="/forneced" method="post" class="mt-4">
+            <form action="/fornecedor/descricao" method="post" class="mt-4">
               <input type="hidden" name="id" value="<%=fornecedor.id%>">
               <label for="logo">Alterar descrição</label>
               <textarea type="text" name="descricao_loja" id="descricao_loja" class="form-control" required></textarea>
@@ -62,7 +62,7 @@
     </div>
     <div>
 
-    <div class="">
+    <div class="mb-4">
       <h2 class="mt-4">Meus produtos</h2>
       <a href="/fornecedor/produtos/add" class="btn btn-success mt-2">Adicionar produto</a>
     </div>

@@ -89,16 +89,24 @@
             <img class="sb-title-icon" src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg" alt="">
             <span class="sb-title">Adicione seu Endereço</span>
           </div>
-          <form action="" method="post">
-            <input type="text" placeholder="Rua" id="location-input" class="form-control mt-1"/>
-            <input type="text" placeholder="Complemento" class="form-control mt-1"/>
-            <input type="text" placeholder="Cidade" id="locality-input" class="form-control mt-1"/>
+          <% let endereco %>
+          <% if(fornecedor) { %>
+            <% endereco = "/for/endereco/add" %>
+          <% } else { %> 
+            <% endereco = "/cli/endereco/add" %>
+          <% } %>
+            <!-- REGEX -->
+          <form action="<%=endereco%>" method="post">
+            <input type="hidden" name="id" id="id" value="<%=id%>">
+            <input type="text" placeholder="Endereço" id="location-input" class="form-control mt-1" name="endereco" required/>
+            <input type="text" placeholder="Cidade" id="locality-input" class="form-control mt-1" name="cidade" required/>
             <div class="half-input-container col-6 col-md-4">
-              <input type="text" class="half-input form-control mt-1" placeholder="UF" id="administrative_area_level_1-input"/>
-              <input type="text" class="half-input form-control mt-1" placeholder="CEP" id="postal_code-input"/>
+              <input type="text" class="half-input form-control mt-1" placeholder="UF" id="administrative_area_level_1-input" name="uf" required/>
+              <input type="text" class="half-input form-control mt-1" placeholder="CEP" id="postal_code-input" name="cep" required/>
             </div>
-            <input type="text" placeholder="País" id="country-input" class="form-control mt-1"/>
-            <input type="text" placeholder="Número" id="numero_casa" class="form-control mt-1">
+            <input type="text" placeholder="País" id="country-input" class="form-control mt-1" name="pais" required/>
+            <input type="text" placeholder="Número" id="numero_casa" class="form-control mt-1" name="numero_casa" required>
+            <input type="text" placeholder="Número" id="complemento" class="form-control mt-1" name="complemento" required>
             <button class="button-cta btn btn-success mt-4">CONFIRMAR</button>
           </form>
         </div>

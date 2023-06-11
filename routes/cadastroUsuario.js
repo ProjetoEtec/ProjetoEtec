@@ -5,6 +5,7 @@ const Cliente = require('../models/cliente')
 const Login = require('../models/login')
 const Banner = require('../models/banner')
 const Logo = require('../models/logo')
+const Endereco = require('../models/endereco')
 const {v4:uuidv4} = require('uuid')
 let erros = []
 //cadastro fornecedor
@@ -80,7 +81,9 @@ router.post('/for/cadastro/add',(req,res)=>{
               fornecedor_id:id
             })
             req.flash("success_msg","Adicione um endereço para sua loja")
-            res.redirect('/for/endereco')
+            req.session.save(()=>{
+              res.redirect('/for/endereco/'+ id)
+            })
           }).catch((err)=>{
             res.send("Houve um erro ao criar o usuario"+err)
           })
@@ -92,12 +95,36 @@ router.post('/for/cadastro/add',(req,res)=>{
   }
 })
 
-router.get("/for/endereco",(req, res)=>{
-  res.render("pages/endereco")
+router.get("/for/endereco/:id",(req, res)=>{
+  res.render("pages/endereco",{ fornecedor:true, id: req.params.id})
 })
-router.post("/for/endereco",(req, res)=>{
 
+router.post("/for/endereco/add", async (req, res)=>{
+  let fornecedor = await Fornecedor.findOne({where : {id : req.body.id}})
+  let id = uuidv4()
+  if(fornecedor) {
+    Endereco.create({
+      id:id,
+      endereco: req.body.endereco,
+      cep:req.body.cep,
+      cidade:req.body.cidade,
+      uf:req.body.uf,
+      pais:req.body.pais,
+      fornecedor_id: req.body.id
+    }) 
+    Fornecedor.update({
+      numero_casa:req.body.numero_casa,
+      complemento:req.body.complemento,
+    }, { where: {id: req.body.id}})
+    req.flash("success_msg","Sucesso. Logue para ter acesso")
+  } else {
+    req.flash("error_msg","Houve um erro")
+  }
+  req.session.save(()=>{
+    res.redirect("/login")
+  })
 })
+// ENDERECO CLIENTE
 
 //cadastro cliente
 router.get('/cli/cadastro', (req, res) =>{

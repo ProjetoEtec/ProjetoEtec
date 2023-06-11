@@ -11,12 +11,12 @@ const { sequelize, Sequelize } = require('./models/db')
 const { Op } = require('sequelize');
 const Login = require('./models/login')
 const Produto = require('./models/produto')
+const Endereco = require('./models/endereco')
 const session = require('express-session')
 var SequelizeStore = require('connect-session-sequelize')(session.Store)
 const flash = require('connect-flash')
 const passport = require('passport')
 const FotoProduto = require('./models/fotosDoProduto')
-const extendDefaultFields = require('./models/session')
 // cuidado !! isso é somente para atualizar todas as tabelas do banco de dados!!
 // // require('./models/updatedb')
 
@@ -94,11 +94,9 @@ app.post('/carrinho/add', async (req, res) => {
     where: {id : req.body.id},
     atributes: ["estoque"]
   })
-//voce ja adicionou esse product
   for(let i = 0; i <= req.session.carrinho.length; i++){
     if(req.session.carrinho[i]){
       if(req.session.carrinho[i].id == req.body.id){
-        // req.session.carrinho[i].qtd += Number(req.body.qtd)
         req.flash("error_msg","Você já adicionou esse produto ao carrinho")
         adicionou = true 
         if(req.session.carrinho[i].qtd > produto.estoque){
@@ -131,7 +129,6 @@ app.get('/carrinho', async (req, res) => {
       }
     }
   })
-  // console.log(produtos[0].fotoProdutos)
   res.render('cliente/carrinho.ejs', {produtos,lista});
 })
 app.post('/carrinho/edit',async (req,res)=>{
@@ -152,10 +149,7 @@ app.post('/carrinho/edit',async (req,res)=>{
 })
 
 app.post("/carrinho/delete/:id", (req,res)=>{
-  let carrinho = req.session.carrinho
   for(let i = 0; i < req.session.carrinho.length; i++) {
-    console.log(i+"+"+req.params.id)
-    console.log(i+"-"+req.session.carrinho[i].id)
     if(req.session.carrinho[i].id == req.params.id){
       req.session.carrinho.splice(i, 1)
     }
@@ -166,7 +160,7 @@ app.post("/carrinho/delete/:id", (req,res)=>{
 })
 
 app.get('/', isNotFornecedor ,async (req, res) => {
- 
+
   const fornecedores = await Fornecedor.findAll({
     include: {model: Logo}
   })
@@ -203,6 +197,10 @@ app.get('/loja-unica/:id', async (req, res) => {
       {
         model: Banner,
         required: true
+      },
+      {
+        model: Endereco,
+        required: true
       }
     ]
   })
@@ -224,9 +222,26 @@ app.get('/login', (req, res) => {
   }
 })
 
-app.post('/login', passport.authenticate('login', {
-  successRedirect: '/',
-  failureRedirect: '/login?fail=true'}))
+// app.post('/login', passport.authenticate('login', {
+//   successRedirect: '/',
+//   failureRedirect: '/login?fail=true'},))
+
+app.post('/login', function(req, res, next) {
+  let carrinho = req.session.carrinho
+  passport.authenticate('login', function(err, user, info) {
+    if (!user) {
+      return res.redirect('/login?fail=true');
+    }
+
+    // Autenticação bem-sucedida, faz o login do usuário
+    req.login(user, ()=>{
+      req.session.carrinho = carrinho;
+      req.session.save(()=>{
+        res.redirect('/');
+      })
+    });
+  })(req, res, next);
+});
 
 app.get('/logout', (req, res) => {
   req.logout(err => {

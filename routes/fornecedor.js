@@ -7,6 +7,7 @@ const Banner = require('../models/banner')
 const Logo = require('../models/logo')
 const FotoProduto = require('../models/fotosDoProduto')
 const Produto = require('../models/produto')
+const Endereco = require('../models/endereco')
 const sharp = require('sharp');
 router.use('/produtos',crudProduto)
 
@@ -43,7 +44,10 @@ router.get('/delete/:id',(req,res)=>{
 
 router.get('/update/:id', (req, res) => {
   Fornecedor.findOne({
-    where:{ id:req.params.id}
+    where:{ id:req.params.id},
+    include:[{
+      model: Endereco
+    }]
   }).then((fornecedores)=>{
     res.render('fornecedor/contafornecedor.ejs',{fornecedores:fornecedores,erros:erros});
   }).catch((err)=>{

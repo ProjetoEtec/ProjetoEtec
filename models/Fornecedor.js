@@ -21,9 +21,14 @@ const Fornecedor = db.sequelize.define("fornecedores", {
   },
   descricao:{
     type:db.Sequelize.STRING
+  },
+  complemento:{
+    type:db.Sequelize.STRING
+  },
+  numero_casa:{
+    type:db.Sequelize.STRING
   }
 })
-// criar id automático
 // Fornecedor.sync({force:true})
 // Banner.sync({force:true})
 // Logo.sync({force:true})
@@ -36,6 +41,7 @@ Fornecedor.hasOne(Banner,{
   foreignKey:"fornecedor_id",
   constraints:false
 })
+
 Logo.belongsTo(Fornecedor,{
   foreignKey:"fornecedor_id",
   constraints:false
