@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 const Cliente = require('../models/cliente');
 const Login = require('../models/login');
+const { Pedido, detalhesDoPedido } = require('../models/pedido');
+const Produto = require('../models/produto');
+const { Op } = require('sequelize');
 const { v4:uuidv4 } = require('uuid');
 let erros = [];
 
@@ -81,9 +84,44 @@ router.get('/delete/:id',(req,res)=>{
   })
 })
 
-
 router.get('/finalizar-pedido',(req,res)=>{
   res.render('cliente/finalizarpedido');
+})
+
+router.post('/pedido', async (req,res)=>{
+  let carrinho = req.session.carrinho;
+  let id = uuidv4();
+  let lista = req.session.carrinho;
+  let lista1 = Object.keys(lista).map(key =>lista[key].id)
+  let produtos = await Produto.findAll({  
+    where: {
+      id:{
+        [Op.in]: lista1
+      }
+    }
+  })
+  if(lista.length > 0){
+    Pedido.create({
+      id:id,
+      data_pedido: Date.now(),
+      situacao_pedido : "pendente",
+      cliente_id: req.session.passport.user,
+    })
+  }
+  for(var i = 0; i < carrinho.length; i++){
+    for(var j = 0; j < carrinho.length; j++){
+      if(carrinho[i].id == produtos[j].id){
+        detalhesDoPedido.create({
+          id: uuidv4(),
+          pedido_id: id,
+          produto_id: carrinho[i].id,
+          quantidade: carrinho[i].qtd,
+          preco: produtos[j].preco
+        })
+      }
+    }
+  }
+  res.send("Teste")
 })
 
 module.exports = router

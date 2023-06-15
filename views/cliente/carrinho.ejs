@@ -1,84 +1,60 @@
 <%- include('../partials/head') %> 
 <%- include('../partials/header') %>
 
-<h2 class="mt-5 mb-5">Meu carrinho</h2>
-<!-- Banco de dados -->
-<div class="card container">
-  <h2 class="mt-4">Produtos</h2>
-    <% produtos.forEach((produto,index) => { %>
-    <div class="card mt-4 produto">
-      <h3 class="ms-4 mt-4">Loja 1</h3>
-
-      <!-- Produtos -->
-        <div class="m-2 m-md-4 row">
-          <div class="col-md-4">
-            <img src="data:<%=produto.fotoProdutos%>;base64,<%=produto.fotoProdutos[0].foto.toString('base64')%>" alt="" class="img-fluid" />
-          </div>
-          <div class="col-md-8">
-            <h3 class="mt-2"><%= produto.nome%></h3>
-            <div class="mt-4 d-flex-md">
-              <label for="qtd">Quantidade: </label>
-              <% for(let i = 0; i < lista.length; i++) { %>
-                <% if(produto.id == lista[i].id) { %>
-                  <input type="hidden" value="<%=produto.id%>" class="productId">
-                  <input type="number" name="qtd" class="w-50 form-control qtd" value="<%=lista[i].qtd%>" id="qtd<%=index%>" min="1" max="<%=produto.estoque%>"/>
-                <% } %>
-              <% } %>
+  <h2 class="mt-4">Carrinho</h2>
+  <% if(!produtos[0]) { %>
+    <% if(id_loja != '') { %>
+      <p class="m-5 card p-5">Não tem produtos? Adicione algum para aparecer aqui. <a href="/loja-unica/<%=id_loja%>">Voltar</a></p>
+    <% } else { %>
+      <p class="m-5 card p-5">Não tem produtos? Adicione algum para aparecer aqui. <a href="/">Pagina home</a></p>
+    <% } %>
+  <% } else { %>
+  <form action="/cliente/pedido" method="post">
+    <div class="card mt-4 produto p-2">
+      <% produtos.forEach((produto,index) => { %>
+          <div class="m-2 m-md-4 row">
+            <div class="col-md-2">
+              <img src="data:<%=produto.fotoProdutos%>;base64,<%=produto.fotoProdutos[0].foto.toString('base64')%>" alt="" class="img-fluid" />
             </div>
-            <p>Preço unitário: R$ <span id="precoUnit<%=index%>"><%=produto.preco%></span></p>
-            <p>Quantidade do estoque: <span class="estoque"><%=produto.estoque%></span></p>
+            <div class="col-md-8">
+              <h3 class="mt-2"><%= produto.nome%></h3>
+              <div class="mt-2 d-flex align-items-center">
+                <% for(let i = 0; i < lista.length; i++) { %>
+                  <% if(produto.id == lista[i].id) { %>
+                <label for="qtd" class="me-2">Quantidade: </label>
+                <input type="hidden" value="<%=produto.id%>" class="productId">
+                <input type="number" name="qtd" class="w-25 form-control qtd" value="<%=lista[i].qtd%>" id="qtd<%=index%>" min="1" max="<%=produto.estoque%>" />
+                <% } %>
+                <% } %>
+              </div>
+              <p>Preço unitário: R$ <span id="precoUnit<%=index%>"><%=produto.preco%></span> <br>
+              Quantidade do estoque: <span class="estoque"><%=produto.estoque%></span></p>
+              <a href="/carrinho/delete/<%=produto.id%>">
+                <button type="button" class="btn btn-danger">Remover produto</button>
+              </a>
+            </div>
           </div>
-        </div>
-        <div class="d-flex justify-content-between m-3">
-          <p>Total do produto: <span id="totalProduto<%=index%>" class="totalProdutos"></span></p>
-          <form action="/carrinho/delete/<%=produto.id%>" method="post">
-            <input type="hidden" name="id" value="<%=produto.id%>">
-            <button class="remove-product-button btn btn-danger" type="submit">Remover produto</button>
-          </form>
-        </div>
-      </div>
       <% }) %>
-      <% if(!produtos[0]) { %>
-        <p class="m-3">Não tem produtos? Adicione algum para aparecer aqui. <a href="/">Voltar</a></p>
-        
-      <% } else { %>
-        <div class="mt-4 row">
-          <h4 class="col-md-4" >Total do Pedido: <span id="totalPedido"></span></h4>
-          <div class="d-flex col-md-4 offset-md-4">
-            <p class="me-3">Deseja excluir o pedido?</p>
-            <form action="/carrinho/delete" method="post">
-              <input type="hidden" name="">
-              <button class="btn btn-danger" type="submit">Excluir</button>
-            </form>
-          </div>
-        </div>
-        <button class="btn btn-success mt-4 btn-lg" type="submit">
-          Efetuar Pedido
-        </button>
-      <% } %>
-    <!-- asdsd -->
-
-</div>
+    </div>
+    <div class="mt-4 row">
+      <h4 class="col-md-4">Total do Pedido: <span id="totalPedido"></span></h4>
+    </div>
+    <button class="btn btn-success mt-2 mb-3 btn-lg" type="submit">
+      Efetuar Pedido
+    </button>
+  </form>
+  <% } %>
 <script defer>
-  
-  function calcularProduto(i){   
-    let qtd = document.getElementById("qtd"+i)
-    let preco = document.getElementById("precoUnit"+i)
-    let totalProduto = document.getElementById("totalProduto"+i)
-
-    let valor = Number(qtd.value) * Number(preco.innerHTML)
-
-    totalProduto.innerHTML = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-  }
     let produtos = document.getElementsByClassName("produto")
     let inputsQtd = document.getElementsByClassName("qtd")
     let productId = document.getElementsByClassName("productId")
     let estoque = document.getElementsByClassName("estoque")
     let totalProdutos = document.getElementsByClassName("totalProdutos")
+
     function calculaTotal(){
       let totalPedido = document.getElementById("totalPedido")
       let total = 0
-      for(let i= 0;i < totalProdutos.length;i++){
+      for(let i= 0;i < productId.length ;i++){
         let qtd = document.getElementById("qtd"+i)
         let preco = document.getElementById("precoUnit"+i)
 
@@ -86,31 +62,27 @@
       }
       totalPedido.innerHTML = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
     }
-    for(let i = 0; i < produtos.length; i++){
+    for(let i = 0; i < productId.length; i++){
       let valor 
       let valEstoque
       inputsQtd[i].addEventListener("input", ()=>{
-        calcularProduto(i)
         calculaTotal()
         valor = inputsQtd[i].value
         valEstoque = estoque[i].innerHTML
-        console.log(valor,valEstoque)
       })
       inputsQtd[i].addEventListener('blur',()=>{
-        console.log("A")
         if(Number(valor) < Number(valEstoque)){
-          console.log("b")
-          
-          fetch('/carrinho/edit', {
-            method: 'POST', 
-            headers: {
-              'Content-Type': 'application/json' 
-            },
-            body: JSON.stringify({valor, i : productId[i].value}) 
-          })
+          if(valor != '' && valor > 0){
+            fetch('/carrinho/edit', {
+              method: 'POST', 
+              headers: {
+                'Content-Type': 'application/json' 
+              },
+              body: JSON.stringify({valor, i : productId[i].value}) 
+            })
+          }
         }
       })
-      calcularProduto(i)
       calculaTotal()
     }
     
