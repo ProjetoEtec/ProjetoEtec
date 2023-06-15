@@ -12,6 +12,7 @@ const { Op } = require('sequelize');
 const Login = require('./models/login')
 const Produto = require('./models/produto')
 const Endereco = require('./models/endereco')
+const Pedido = require('./models/pedido')
 const session = require('express-session')
 var SequelizeStore = require('connect-session-sequelize')(session.Store)
 const flash = require('connect-flash')
@@ -42,6 +43,10 @@ app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg')
   res.locals.error_msg = req.flash('error_msg')
   res.locals.user = req.user || null
+  if(!req.session.id_loja){
+    req.session.id_loja = ''
+  } 
+  res.locals.id_loja = req.session.id_loja
   if(!req.session.carrinho){
     req.session.carrinho=[]
   } 
@@ -134,7 +139,6 @@ app.get('/carrinho', async (req, res) => {
 app.post('/carrinho/edit',async (req,res)=>{
   let adicionou = false
   for(let i = 0; i < req.session.carrinho.length; i++) {
-    console.log(i)
     if(req.session.carrinho[i].id == req.body.i){
       req.session.carrinho[i].qtd = req.body.valor 
       adicionou = true
@@ -148,7 +152,7 @@ app.post('/carrinho/edit',async (req,res)=>{
   }
 })
 
-app.post("/carrinho/delete/:id", (req,res)=>{
+app.get("/carrinho/delete/:id", (req,res)=>{
   for(let i = 0; i < req.session.carrinho.length; i++) {
     if(req.session.carrinho[i].id == req.params.id){
       req.session.carrinho.splice(i, 1)
@@ -158,6 +162,7 @@ app.post("/carrinho/delete/:id", (req,res)=>{
     res.redirect('back')
   })
 })
+
 
 app.get('/', isNotFornecedor ,async (req, res) => {
 
@@ -182,9 +187,9 @@ app.get('/', isNotFornecedor ,async (req, res) => {
   }
 })
 
-app.get('/produto', (req, res) => {
-  res.render('pages/produto.ejs')
-})
+// app.get('/produto', (req, res) => {
+//   res.render('pages/produto.ejs')
+// })
 
 app.get('/loja-unica/:id', async (req, res) => {
   let fornecedor = await Fornecedor.findOne({
@@ -211,6 +216,7 @@ app.get('/loja-unica/:id', async (req, res) => {
         required: true
       }
   })
+  if(fornecedor.id) req.session.id_loja = fornecedor.id
   res.render('pages/loja.ejs', { fornecedor: fornecedor, produtos: produtos })
 })
 
@@ -222,12 +228,10 @@ app.get('/login', (req, res) => {
   }
 })
 
-// app.post('/login', passport.authenticate('login', {
-//   successRedirect: '/',
-//   failureRedirect: '/login?fail=true'},))
 
 app.post('/login', function(req, res, next) {
   let carrinho = req.session.carrinho
+  let id_loja = req.session.id_loja
   passport.authenticate('login', function(err, user, info) {
     if (!user) {
       return res.redirect('/login?fail=true');
@@ -236,6 +240,7 @@ app.post('/login', function(req, res, next) {
     // Autenticação bem-sucedida, faz o login do usuário
     req.login(user, ()=>{
       req.session.carrinho = carrinho;
+      req.session.id_loja = id_loja
       req.session.save(()=>{
         res.redirect('/');
       })
