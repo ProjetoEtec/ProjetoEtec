@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const Cliente = require('../models/cliente');
+const Fornecedor = require('../models/Fornecedor');
 const Login = require('../models/login');
 const { Pedido, detalhesDoPedido } = require('../models/pedido');
 const Produto = require('../models/produto');
 const { Op } = require('sequelize');
 const { v4:uuidv4 } = require('uuid');
+const FotoProduto = require('../models/fotosDoProduto');
 let erros = [];
 
 //read
@@ -106,22 +108,60 @@ router.post('/pedido', async (req,res)=>{
       data_pedido: Date.now(),
       situacao_pedido : "pendente",
       cliente_id: req.session.passport.user,
+      fornecedor_id: produtos[0].fornecedor_id
     })
-  }
-  for(var i = 0; i < carrinho.length; i++){
-    for(var j = 0; j < carrinho.length; j++){
-      if(carrinho[i].id == produtos[j].id){
-        detalhesDoPedido.create({
-          id: uuidv4(),
-          pedido_id: id,
-          produto_id: carrinho[i].id,
-          quantidade: carrinho[i].qtd,
-          preco: produtos[j].preco
-        })
+    for(var i = 0; i < carrinho.length; i++){
+      for(var j = 0; j < carrinho.length; j++){
+        if(carrinho[i].id == produtos[j].id){
+          detalhesDoPedido.create({
+            id: uuidv4(),
+            pedido_id: id,
+            produto_id: carrinho[i].id,
+            quantidade: carrinho[i].qtd,
+            preco: produtos[j].preco
+          })
+        }
       }
     }
   }
-  res.send("Teste")
+  req.session.carrinho = []
+  req.flash("success_msg","Pedido enviado com sucesso, aguarde o fornecedor aceitar o pedido.")
+  req.session.save(()=>{
+    res.redirect("/cliente/meus-pedidos")
+  })
+})
+
+router.get('/meus-pedidos',async (req,res)=>{
+  let pedido = await Pedido.findOne({
+    where: {
+      cliente_id : req.user.id
+    },
+    include: [{
+        model : detalhesDoPedido,
+        required: true
+    }]
+  })
+  let produtos
+  let fornecedor
+  if(pedido){
+    let prod = pedido.detalhes_do_pedidos.map((detalhes)=>{
+      return detalhes.produto_id
+    })
+    produtos = await Produto.findAll({
+      where: {
+        id : {
+          [Op.in] : prod
+        }
+      },
+      include: [{
+        model: FotoProduto
+      }]
+    })
+    fornecedor = await Fornecedor.findOne({where: {
+      id: pedido.fornecedor_id
+    }})
+  }
+  res.render('./cliente/meusPedidos',{produtos,pedido,fornecedor})
 })
 
 module.exports = router

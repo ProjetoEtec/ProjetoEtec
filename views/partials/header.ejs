@@ -19,7 +19,11 @@
               <a class="nav-link" href="/carrinho">Carrinho</a>
             </li>
             <% } else if (user.type_user == "cliente") { %>
+            <li>
               <a class="nav-link" href="/carrinho">Carrinho</a>
+            </li>
+            <li>
+              <a class="nav-link" href="/cliente/meus-pedidos">Meus pedidos</a>
             </li>
           <% } else if (user.type_user == "fornecedor") { %>
             <li class="nav-item">

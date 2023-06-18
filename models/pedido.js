@@ -2,6 +2,7 @@ const db = require('./db')
 const Cliente = require('./cliente')
 const Produto = require('./produto')
 const { Op } = require('sequelize');
+const Fornecedor = require('./Fornecedor');
 
 const Pedido = db.sequelize.define('pedido',{
   id:{
@@ -57,10 +58,31 @@ Pedido.hasMany(detalhesDoPedido, {
   foreignKey: "pedido_id",
   constraints: false
 })
-
+//pedido e fornecedor
+detalhesDoPedido.hasMany(Produto,{
+  foreignKey: "produto_id", 
+  constraints: false
+})
+Produto.belongsTo(detalhesDoPedido,{
+  foreignKey: "produto_id", 
+  constraints: false
+})
+//pedido e fornecedor
+Pedido.belongsTo(Fornecedor,{
+  foreignKey: "fornecedor_id",
+  constraints: false
+})
+Fornecedor.hasMany(Pedido, {
+  foreignKey: "fornecedor_id",
+  constraints: false,
+  scope: {
+    cliente_id: {[Op.col]: 'cliente.id'}
+  }
+})
 
 // Pedido.sync({force:true})
-// Cliente.sync({force:true})
 // detalhesDoPedido.sync({force:true})
+// Produto.sync({force:true})
+// Cliente.sync({force:true})
 
 module.exports = {Pedido:Pedido, detalhesDoPedido:detalhesDoPedido}

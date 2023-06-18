@@ -1,0 +1,57 @@
+<%- include('../partials/head') %> 
+<%- include('../partials/header') %>
+  <h2 class="mt-4">Meus pedidos</h2>
+  <% if(!pedido) { %>
+      <p class="m-5 card p-5">Você não tem pedidos pendentes.</p>
+  <% } else { %>
+    <div class="card mt-4 produto p-2">
+      <h5><%=fornecedor.nome_fantasia%></h5>
+      <% produtos.forEach((produto,index) => { %>
+          <div class="m-2 m-md-4 row">
+            <div class="col-md-2">
+              <img src="data:<%=produto.fotoProdutos%>;base64,<%=produto.fotoProdutos[0].foto.toString('base64')%>" class="img-fluid" />
+            </div>
+            <div class="col-md-8">
+              <h3 class="mt-2"><%= produto.nome%></h3>
+              <div class="mt-2 d-flex align-items-center">
+                <% for(let i = 0; i < produtos.length; i++) { %>
+                  <% if(pedido.detalhes_do_pedidos[i].produto_id == produto.id) { %>
+                    <p>Quantidade: <span class="qtd" id="qtd<%=index%>"><%=pedido.detalhes_do_pedidos[0].quantidade%></span>
+                  <% } %>
+                <% } %>
+                <br>
+                Preço unitário: R$ <span id="precoUnit<%=index%>"><%=produto.preco%></span>
+              </div>
+            </div>
+          </div>
+      <% }) %>
+    </div>
+    <div class="mt-4 d-flex justify-content-between">
+      <h4>Total do Pedido: <span id="totalPedido"></span></h4>
+      <h4>Situação do Pedido: <%=pedido.situacao_pedido%></h4>
+    </div>
+    <form action="/cliente/cancelar-pedido" method="post">
+      <input type="hidden" value="<%=pedido.id%>">
+      <button class="btn btn-danger mt-2 mb-3 btn-lg" type="submit">
+        Cancelar Pedido
+      </button>
+    </form>
+  <% } %>
+<script defer>
+    let inputsQtd = document.getElementsByClassName("qtd")
+    let productId = document.getElementsByClassName("productId")
+    let totalProdutos = document.getElementsByClassName("totalProdutos")
+
+    function calculaTotal(){
+      let totalPedido = document.getElementById("totalPedido")
+      let total = 0
+      for(let i= 0;i < inputsQtd.length ;i++){
+        let qtd = document.getElementById("qtd"+i)
+        let preco = document.getElementById("precoUnit"+i)
+        total += Number(qtd.innerHTML) * Number(preco.innerHTML)
+      }
+      totalPedido.innerHTML = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+    }
+      calculaTotal()
+  </script>
+<%- include('../partials/footer') %>
