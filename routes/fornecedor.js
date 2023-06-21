@@ -6,6 +6,7 @@ const Login = require('../models/login')
 const Banner = require('../models/banner')
 const Logo = require('../models/logo')
 const FotoProduto = require('../models/fotosDoProduto')
+const {Pedido, detalhesDoPedido} = require("../models/pedido")
 const Produto = require('../models/produto')
 const Endereco = require('../models/endereco')
 const sharp = require('sharp');
@@ -93,7 +94,12 @@ router.post('/update/func', (req,res)=>{
   }
 })
 
-router.get('/pedidos',(req, res) => {
+router.get('/pedidos', async (req, res) => {
+  let pedidos = await Pedido.findAll({
+    where:{
+      fornecedor_id : req.user.id
+    }
+  })
     res.render('fornecedor/pedidofornecedor.ejs');
 })
 

@@ -14,6 +14,7 @@ const Produto = require('./models/produto')
 const Endereco = require('./models/endereco')
 const Pedido = require('./models/pedido')
 const session = require('express-session')
+// const Session = require('./models/session')
 var SequelizeStore = require('connect-session-sequelize')(session.Store)
 const flash = require('connect-flash')
 const passport = require('passport')
@@ -164,27 +165,31 @@ app.get("/carrinho/delete/:id", (req,res)=>{
 })
 
 
-app.get('/', isNotFornecedor ,async (req, res) => {
+// app.get('/', isNotFornecedor ,async (req, res) => {
 
-  const fornecedores = await Fornecedor.findAll({
-    include: {model: Logo}
-  })
-  const produtos = await Produto.findAll({
-    include: {
-        model: FotoProduto,
-        required: true
-      },
-    order: Sequelize.literal('rand()'),
-    limit: 20
-  })
-  try {
-    res.render('index.ejs', {
-      fornecedores: fornecedores,
-      produtos: produtos
-    })
-  } catch (err) {
-    res.send(err.message)
-  }
+//   const fornecedores = await Fornecedor.findAll({
+//     include: {model: Logo}
+//   })
+//   const produtos = await Produto.findAll({
+//     include: {
+//         model: FotoProduto,
+//         required: true,
+//       },
+//     order: Sequelize.literal('rand()'),
+//     limit: 20
+//   })
+//   try {
+//     res.render('index.ejs', {
+//       fornecedores: fornecedores,
+//       produtos: produtos
+//     })
+//   } catch (err) {
+//     res.send(err.message)
+//   }
+// })
+
+app.get('/', (req,res)=>{
+  res.render('home.ejs')
 })
 
 // app.get('/produto', (req, res) => {
