@@ -2,28 +2,50 @@
 <%- include('../partials/header') %>
 
 <h1 class="mt-4">Pedidos</h1>
-<div class="card container mt-4">
-    <div class="card-body">
-            <h3>Informações  do cliente</h3>
-                <p>ID do pedido:</p>
-                <p>Nome:</p>
-                <p>Número para contato:</p>
-                <p>Endereço:</p>
+<% if(!pedido[0]) { %>
 
-            <h2> Itens do pedido</h2>
 
-            <div class="d-flex gap-2 gap-md-4">
-                <img src="/img/gin.jpg" alt="" class="col-md-2 col-4">
-                <div class="mt-3 col-md-4">
-                    <p>Quantidade:</p>
-                    <p>Preço:</p>
-                </div>
+<% } else { %>
+    <%for(let i = 0; i < pedido.length; i++) {%>
+        <div class="card container mt-4">
+            <div class="card-body">
+                    <h3>Informações  do cliente</h3>
+                        <p>ID do pedido: <%=pedido[i].id%></p>
+                        <% for(let j = 0; j < clientes.length; j++) {%>
+                            <% if (clientes[j].id ==  pedido[i].cliente_id ) {%>
+                            <p>Nome: <%=clientes[j].nome%></p>
+                            <p>Número para contato: <%=clientes[j].telefone%></p>
+                            <p>Endereço:</p>
+                            <% } %>
+                        <% } %>
+        
+                    <h2> Itens do pedido</h2>
+                    <% for(let j = 0; j < pedido[i].detalhes_do_pedidos.length; j++) {%>
+                        <% produtos.forEach((produto) => { %>
+                            <% if(pedido[i].detalhes_do_pedidos[j].produto_id == produto.id) { %>
+                              <div class="row">
+                                <div class="col-md-2">
+                                  <img src="data:<%=produto.fotoProdutos%>;base64,<%=produto.fotoProdutos[0].foto.toString('base64')%>" class="img-fluid"/>
+                                </div>
+                                <div class="col-md-8">
+                                  <h3 class="mt-2"><%= produto.nome%></h3>
+                                  <div class="mt-2 d-flex align-items-center">
+                                      <p>Quantidade: <span class="qtd" id="qtd"><%=pedido[i].detalhes_do_pedidos[j].quantidade%></span>
+                                    <br>
+                                    Preço unitário: <span id="precoUnit"><%=Number(pedido[i].detalhes_do_pedidos[j].preco).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })%></span>
+                                  </div>
+                                </div>
+                              </div>
+                            <% } %>
+                        <% }) %>
+                    <% } %>
+                    <div>
+                        <button type="button" class="btn btn-success mt-4">Aceitar</button>
+                        <button type="button" class="btn btn-success mt-4">Recusar</button>
+                    </div>
             </div>
-            <div>
-                <button type="button" class="btn btn-success mt-4">Aceitar</button>
-                <button type="button" class="btn btn-success mt-4">Recusar</button>
-            </div>
-    </div>
-</div>
+        </div>
+    <% } %>
+<% } %>
 
 <%- include('../partials/footer') %>

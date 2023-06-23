@@ -132,7 +132,7 @@ router.post('/pedido', async (req,res)=>{
 })
 
 router.get('/meus-pedidos',async (req,res)=>{
-  let pedido = await Pedido.findOne({
+  let pedido = await Pedido.findAll({
     where: {
       cliente_id : req.user.id
     },
@@ -143,25 +143,44 @@ router.get('/meus-pedidos',async (req,res)=>{
   })
   let produtos
   let fornecedor
-  if(pedido){
-    let prod = pedido.detalhes_do_pedidos.map((detalhes)=>{
-      return detalhes.produto_id
-    })
+  if(pedido[0]){
+    let prod_id = []
+    let fornecedor_id = []
+    let total = []
+    for(let i = 0; i < pedido.length ; i++){
+      prod_id.unshift(pedido[i].detalhes_do_pedidos.map(detalhes => detalhes.produto_id)) 
+
+      fornecedor_id = pedido.map((pedido)=>{
+        return pedido.fornecedor_id
+      })
+      total[i] = 0
+
+      for(let j = 0; j < pedido[i].detalhes_do_pedidos.length; j++){
+        total[i] += Number(pedido[i].detalhes_do_pedidos[j].preco) * Number(pedido[i].detalhes_do_pedidos[j].quantidade)
+      }
+      pedido[i].total = total[i]
+    }
     produtos = await Produto.findAll({
       where: {
         id : {
-          [Op.in] : prod
+          [Op.in] : prod_id
         }
       },
       include: [{
         model: FotoProduto
       }]
     })
-    fornecedor = await Fornecedor.findOne({where: {
-      id: pedido.fornecedor_id
+    fornecedor = await Fornecedor.findAll({where: {
+      id: {
+        [Op.in] : fornecedor_id
+      }
     }})
   }
   res.render('./cliente/meusPedidos',{produtos,pedido,fornecedor})
+})
+
+router.get('/deletar/pedido',(req,res)=>{
+  
 })
 
 module.exports = router

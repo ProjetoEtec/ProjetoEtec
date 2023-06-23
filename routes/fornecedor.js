@@ -4,11 +4,13 @@ const crudProduto = require("./crudProduto")
 const Fornecedor = require('../models/Fornecedor')
 const Login = require('../models/login')
 const Banner = require('../models/banner')
+const Cliente = require('../models/cliente')
 const Logo = require('../models/logo')
 const FotoProduto = require('../models/fotosDoProduto')
 const {Pedido, detalhesDoPedido} = require("../models/pedido")
 const Produto = require('../models/produto')
 const Endereco = require('../models/endereco')
+const { Op } = require('sequelize');
 const sharp = require('sharp');
 router.use('/produtos',crudProduto)
 
@@ -95,12 +97,52 @@ router.post('/update/func', (req,res)=>{
 })
 
 router.get('/pedidos', async (req, res) => {
-  let pedidos = await Pedido.findAll({
+  let pedido = await Pedido.findAll({
     where:{
       fornecedor_id : req.user.id
-    }
+    },
+    include : [{
+      model: detalhesDoPedido
+    }]
   })
-    res.render('fornecedor/pedidofornecedor.ejs');
+  let clientes
+  let produtos 
+  
+  if(pedido[0]){
+    let id_clientes = pedido.map((pedidos)=>{
+      return pedidos.cliente_id
+    })
+    clientes = await Cliente.findAll({
+      where: {
+        id: id_clientes
+      }
+    })
+    let prod_id = []
+    let total = []
+    for(let i = 0; i < pedido.length ; i++){
+      prod_id.unshift(pedido[i].detalhes_do_pedidos.map(detalhes => detalhes.produto_id)) 
+
+      total[i] = 0
+
+      for(let j = 0; j < pedido[i].detalhes_do_pedidos.length; j++){
+        total[i] += Number(pedido[i].detalhes_do_pedidos[j].preco) * Number(pedido[i].detalhes_do_pedidos[j].quantidade)
+      }
+      pedido[i].total = total[i]
+
+      produtos = await Produto.findAll({
+        where: {
+          id : {
+            [Op.in] : prod_id
+          }
+        },
+        include: [{
+          model: FotoProduto
+        }]
+      })
+    }
+  }
+  
+    res.render('fornecedor/pedidofornecedor.ejs', {pedido,clientes,produtos});
 })
 
 router.post('/logo',upload.single("logo"),(req, res) => {
