@@ -20,4 +20,4 @@ function extendDefaultFields(defaults, session) {
 
 // session.sync()
 
-module.exports = extendDefaultFields
+module.exports = session

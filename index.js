@@ -188,7 +188,7 @@ app.get("/carrinho/delete/:id", (req,res)=>{
 //   }
 // })
 
-app.get('/', (req,res)=>{
+app.get('/', isNotFornecedor ,(req,res)=>{
   res.render('home.ejs')
 })
 

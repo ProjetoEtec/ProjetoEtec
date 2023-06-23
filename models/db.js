@@ -13,13 +13,13 @@ const sequelize =  new Sequelize('bd_projeto_etec',process.env.DATABASE_USERNAME
 })
 console.log('Connected to PlanetScale!')
 
-// const sequelize =  new Sequelize('bd_projeto_etec','root','',{
+// const sequelize =  new Sequelize('bd_projeto_etec','root','123456',{
 //   host:'localhost',
 //   dialect:"mysql",
 //   dialectModule:require('mysql2'),
-//   port: 3306
+//   port: 3307
 // })
-// const sequelize =  new Sequelize('projeto_etec','root','jose2582',{
+// const sequelize =  new Sequelize('bd_projeto_etec','root','',{
 //   host:'localhost',
 //   dialect:"mysql",
 //   dialectModule:require('mysql2'),

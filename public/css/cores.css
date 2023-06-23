@@ -6,10 +6,7 @@
  --cor-secundaria: #011627;
  --cor-azul: #0576AC
 }
-.azul {
-  background-color : var(--cor-azul);
-  color : #ffffff
-}
+
 
 .branco{
  background: var(--cor-principal);
