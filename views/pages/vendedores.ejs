@@ -1,0 +1,29 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<h2 class="mt-5 mb-5">Lojas</h2>
+
+<div class="row row-cols-4">  
+  <% for (i = 0; i < fornecedores.length ; i++ ) { %>
+  <div class="col-6 col-md-4 col-lg-3">
+    <div class="card cartao">
+      <a href="/loja-unica/<%=fornecedores[i].id%>" class="text-decoration-none text-dark position-relative">
+          <% let logo = fornecedores[i].logo.logo%>
+          <%if(logo != null) { %>
+            <img src="data:<%= fornecedores[i].logo.tipo %>;base64,<%= fornecedores[i].logo.logo.toString('base64')%>" class="img-produto p-2" alt="..." />
+          <% } else { %>
+            <div>
+              Essa loja não tem logo
+            </div>
+          <% } %>
+          <div class="card-body">
+            <h5><%=fornecedores[i].nome_fantasia%></h5>
+            <button class="btn btn-success">Ver mais</button>
+          </div>
+      </a>
+    </div>
+  </div>
+  <% } %> 
+</div>
+
+<%- include('../partials/footer') %>

@@ -187,7 +187,18 @@ app.get("/carrinho/delete/:id", (req,res)=>{
 //     res.send(err.message)
 //   }
 // })
-
+app.get('/termos-de-uso',(req,res)=>{
+  res.render('pages/termosdeuso')
+})
+app.get('/politica-de-privacidade',(req,res)=>{
+  res.render('pages/politicadeprivacidade')
+})
+app.get('/vendedores',async (req,res)=>{
+  const fornecedores = await Fornecedor.findAll({
+    include: {model: Logo}
+  })
+  res.render('pages/vendedores', {fornecedores:fornecedores})
+})
 app.get('/', isNotFornecedor ,(req,res)=>{
   res.render('home.ejs')
 })
