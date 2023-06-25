@@ -27,10 +27,10 @@
                         <% produtos.forEach((produto) => { %>
                             <% if(pedido[i].detalhes_do_pedidos[j].produto_id == produto.id) { %>
                               <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-4">
                                   <img src="data:<%=produto.fotoProdutos%>;base64,<%=produto.fotoProdutos[0].foto.toString('base64')%>" class="img-fluid"/>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-8 col-8">
                                   <h3 class="mt-2"><%= produto.nome%></h3>
                                   <div class="mt-2 d-flex align-items-center">
                                       <p>Quantidade: <span class="qtd" id="qtd"><%=pedido[i].detalhes_do_pedidos[j].quantidade%></span>
@@ -42,6 +42,7 @@
                             <% } %>
                         <% }) %>
                     <% } %>
+                    <h3>Total do pedido: <%=pedido[i].total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })%></h3>
                     <div>
                         <button type="button" class="btn btn-success mt-4">Aceitar</button>
                         <button type="button" class="btn btn-success mt-4">Recusar</button>
