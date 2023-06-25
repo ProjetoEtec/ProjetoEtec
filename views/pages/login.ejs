@@ -5,7 +5,7 @@
     <div class="alert alert-danger"><%=messages%></div>
 <% } %>
 
-<div class="card mt-5">
+<div class="card mt-5 align-self-center">
     <div class="card-body p-5">
         <h1 class="text-center mt-4">Login</h1>
         <form action="/login" method="post" class="container mt-10 col-md-6 offset-md-3 ">
@@ -17,13 +17,16 @@
                 <label for="senha">Senha</label>
                 <input type="password" class="mt-2 form-control" name="senha" id="senha" value="123">     
             </div>    
-            <button type="submit" class="btn btn-success mt-4">Entrar</button>
+            <div class="d-flex align-items-center justify-content-between row">
+                <div class="col-md-4 ">
+                    <button type="submit" class="btn btn-success mt-4">Entrar</button>
+                </div>
+                <div class="col-md-8 mt-2">
+                    <a href="/cli/cadastro"><small>Criar uma conta como cliente</small></a><br>
+                    <a href="/for/cadastro"><small>Criar uma conta como fornecedor</small></a>
+                </div>
+            </div>
         </form>
-        <div>
-            <!-- <a href=""><small>Esqueceu sua senha?</small></a><br> -->
-            <a href="/cli/cadastro"><small>Deseja criar uma conta como cliente?</small></a><br>
-            <a href="/for/cadastro"><small>Deseja criar uma conta como fornecedor?</small></a><br>
-        </div>
     </div>
 </div>
 

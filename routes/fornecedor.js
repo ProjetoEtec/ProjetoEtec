@@ -200,4 +200,10 @@ router.get('/minha-loja',async (req, res) => {
   res.render('fornecedor/lojaFornecedor',{fornecedor:fornecedor,produto:produtos})
 })
 
+router.get('/aceitar-pedido/:id',(req,res)=>{
+  Pedido.update({
+    situacao_pedido: "Em andamento"
+  })
+})
+
 module.exports = router
