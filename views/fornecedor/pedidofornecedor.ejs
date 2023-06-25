@@ -10,14 +10,16 @@
         <div class="card container mt-4">
             <div class="card-body">
                     <h3>Informações  do cliente</h3>
-                        <p>ID do pedido: <%=pedido[i].id%></p>
-                        <% for(let j = 0; j < clientes.length; j++) {%>
-                            <% if (clientes[j].id ==  pedido[i].cliente_id ) {%>
-                            <p>Nome: <%=clientes[j].nome%></p>
-                            <p>Número para contato: <%=clientes[j].telefone%></p>
-                            <p>Endereço:</p>
-                            <% } %>
-                        <% } %>
+                    <% for(let j = 0; j < clientes.length; j++) {%>
+                      <% if (clientes[j].id ==  pedido[i].cliente_id ) {%>
+                        <ul>
+                          <li>ID do pedido: <%=pedido[i].id%></li>
+                          <li>Nome: <%=clientes[j].nome%></li>
+                          <li>Número para contato: <%=clientes[j].telefone%></li>
+                          <li>Endereço: <%=clientes[j].endereco.endereco + ",  "+ clientes[j].numero_casa%></li>
+                        </ul>
+                      <% } %>
+                    <% } %>
         
                     <h2> Itens do pedido</h2>
                     <% for(let j = 0; j < pedido[i].detalhes_do_pedidos.length; j++) {%>

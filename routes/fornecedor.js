@@ -106,7 +106,7 @@ router.get('/pedidos', async (req, res) => {
     }]
   })
   let clientes
-  let produtos 
+  let produtos
   
   if(pedido[0]){
     let id_clientes = pedido.map((pedidos)=>{
@@ -115,6 +115,9 @@ router.get('/pedidos', async (req, res) => {
     clientes = await Cliente.findAll({
       where: {
         id: id_clientes
+      },
+      include: {
+        model: Endereco
       }
     })
     let prod_id = []

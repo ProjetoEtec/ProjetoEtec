@@ -125,6 +125,35 @@ router.post("/for/endereco/add", async (req, res)=>{
   })
 })
 // ENDERECO CLIENTE
+router.get("/cli/endereco/:id",(req, res)=>{
+  res.render("pages/endereco",{ fornecedor:false, id: req.params.id})
+})
+
+router.post("/cli/endereco/add", async (req, res)=>{
+  let cliente = await Cliente.findOne({where : {id : req.body.id}})
+  let id = uuidv4()
+  if(cliente) {
+    Endereco.create({
+      id:id,
+      endereco: req.body.endereco,
+      cep:req.body.cep,
+      cidade:req.body.cidade,
+      uf:req.body.uf,
+      pais:req.body.pais,
+      cliente_id: req.body.id
+    }) 
+    Cliente.update({
+      numero_casa:req.body.numero_casa,
+      complemento:req.body.complemento,
+    }, { where: {id: req.body.id}})
+    req.flash("success_msg","Sucesso. Logue para ter acesso")
+  } else {
+    req.flash("error_msg","Houve um erro")
+  }
+  req.session.save(()=>{
+    res.redirect("/login")
+  })
+})
 
 //cadastro cliente
 router.get('/cli/cadastro', (req, res) =>{
@@ -191,7 +220,7 @@ router.post('/cli/cadastro/add',(req,res)=>{
         }).then(()=>{
           req.flash("success_msg","Conta criada com sucesso, logue para ter acesso")
           req.session.save(()=>{
-            res.redirect('/')
+            res.redirect('/cli/endereco/' + id)
           })
         }).catch((err)=>{
           res.send("Houve um erro ao criar o usuario"+err)
