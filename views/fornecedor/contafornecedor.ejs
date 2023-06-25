@@ -34,7 +34,7 @@
             <!-- Fazer integração com google para enderecos -->
             <div class="mt-4 col-md-6">
                 <label for="endereco">Endereço:</label><br>
-                <input type="text" name="endereco" class="mt-2 form-control" value="<%=fornecedores.endereco.endereco%>">
+                <input type="text" name="endereco" class="mt-2 form-control" value="<%=fornecedores.endereco.endereco+", "+fornecedores.numero_casa%>">
             </div>
             
             <!-- Rota para atualizar senha -->

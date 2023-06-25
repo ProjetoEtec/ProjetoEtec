@@ -6,6 +6,11 @@
   <% } else { %>
     <% for(let i = 0; i < pedido.length; i++){ %>
       <div class="card mt-4 p-md-5 p-4">
+        <%for(let j = 0; j < fornecedor.length; j++){ %>
+          <%if(fornecedor[j].id == pedido[i].fornecedor_id){%>
+            <h2 class="mb-4"><%= fornecedor[j].nome_fantasia%></h2>
+          <% } %>
+        <% } %>
       <% for(let j = 0; j < pedido[i].detalhes_do_pedidos.length; j++){ %>
         <% produtos.forEach((produto) => { %>
           <% if(pedido[i].detalhes_do_pedidos[j].produto_id == produto.id) { %>
