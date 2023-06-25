@@ -17,6 +17,7 @@
                           <li>Nome: <%=clientes[j].nome%></li>
                           <li>Número para contato: <%=clientes[j].telefone%></li>
                           <li>Endereço: <%=clientes[j].endereco.endereco + ",  "+ clientes[j].numero_casa%></li>
+                          <li>Data do pedido: <%=pedido[i].createdAt.toString().slice(4,24)%></li>
                         </ul>
                       <% } %>
                     <% } %>
