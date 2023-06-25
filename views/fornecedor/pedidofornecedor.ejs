@@ -22,16 +22,16 @@
                       <% } %>
                     <% } %>
         
-                    <h2> Itens do pedido</h2>
+                    <h3> Itens do pedido</h3>
                     <% for(let j = 0; j < pedido[i].detalhes_do_pedidos.length; j++) {%>
                         <% produtos.forEach((produto) => { %>
                             <% if(pedido[i].detalhes_do_pedidos[j].produto_id == produto.id) { %>
                               <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-4 col-4">
                                   <img src="data:<%=produto.fotoProdutos%>;base64,<%=produto.fotoProdutos[0].foto.toString('base64')%>" class="img-fluid"/>
                                 </div>
                                 <div class="col-md-8">
-                                  <h3 class="mt-2"><%= produto.nome%></h3>
+                                  <h4 class="mt-2"><%= produto.nome%></h4>
                                   <div class="mt-2 d-flex align-items-center">
                                       <p>Quantidade: <span class="qtd" id="qtd"><%=pedido[i].detalhes_do_pedidos[j].quantidade%></span>
                                     <br>
@@ -42,9 +42,14 @@
                             <% } %>
                         <% }) %>
                     <% } %>
+                    <h5>Total do pedido: <%=pedido[i].total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })%></h5>
                     <div>
+                      <a href="/fornecedor/aceitar-pedido/<%=pedido[i].id%>">
                         <button type="button" class="btn btn-success mt-4">Aceitar</button>
+                      </a>
+                      <a href="/fornecedor/recusar-pedido/<%=pedido[i].id%>">
                         <button type="button" class="btn btn-success mt-4">Recusar</button>
+                      </a>
                     </div>
             </div>
         </div>
