@@ -43,14 +43,20 @@
                         <% }) %>
                     <% } %>
                     <h5>Total do pedido: <%=pedido[i].total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })%></h5>
-                    <div>
-                      <a href="/fornecedor/aceitar-pedido/<%=pedido[i].id%>">
-                        <button type="button" class="btn btn-success mt-4">Aceitar</button>
-                      </a>
-                      <a href="/fornecedor/recusar-pedido/<%=pedido[i].id%>">
-                        <button type="button" class="btn btn-success mt-4">Recusar</button>
-                      </a>
-                    </div>
+                    <%if(pedido[i].situacao_pedido == "pendente") { %>
+                      <div>
+                        <a href="/fornecedor/aceitar-pedido/<%=pedido[i].id%>">
+                          <button type="button" class="btn btn-success mt-4">Aceitar</button>
+                        </a>
+                        <a href="/fornecedor/recusar-pedido/<%=pedido[i].id%>">
+                          <button type="button" class="btn btn-success mt-4">Recusar</button>
+                        </a>
+                      </div>
+                    <% } else if (pedido[i].situacao_pedido == "Em andamento") { %>
+                      <ul>
+                        <li>Pedido em andamento, o cliente deverá confirmar a entrega</li>
+                      </ul>
+                    <% } %>
             </div>
         </div>
     <% } %>

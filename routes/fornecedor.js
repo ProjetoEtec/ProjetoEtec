@@ -204,9 +204,21 @@ router.get('/minha-loja',async (req, res) => {
 })
 
 router.get('/aceitar-pedido/:id',(req,res)=>{
-  Pedido.update({
-    situacao_pedido: "Em andamento"
-  })
+  try {
+    Pedido.update({
+      situacao_pedido: "Em andamento"
+    },{
+      where: {
+        id: req.params.id
+      }
+    })
+    req.flash('success_msg','Pedido aceito')
+    req.session.save(()=>{
+      res.redirect('/fornecedor/pedidos')
+    })
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 module.exports = router
