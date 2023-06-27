@@ -220,5 +220,73 @@ router.get('/aceitar-pedido/:id',(req,res)=>{
     console.log(error)
   }
 })
+router.get('/recusar-pedido/:id',(req,res)=>{
+  try {
+    Pedido.update({
+      situacao_pedido: "Pedido recusado"
+    },{
+      where: {
+        id: req.params.id
+      }
+    })
+    req.flash('success_msg','Pedido recusado')
+    req.session.save(()=>{
+      res.redirect('/fornecedor/pedidos')
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
 
+router.get('/historico',async (req,res)=>{
+  let pedido = await Pedido.findAll({
+    where:{
+      fornecedor_id : req.user.id
+    },
+    include : [{
+      model: detalhesDoPedido
+    }]
+  })
+  let clientes
+  let produtos
+  
+  if(pedido[0]){
+    let id_clientes = pedido.map((pedidos)=>{
+      return pedidos.cliente_id
+    })
+    clientes = await Cliente.findAll({
+      where: {
+        id: id_clientes
+      },
+      include: {
+        model: Endereco
+      }
+    })
+    let prod_id = []
+    let total = []
+    for(let i = 0; i < pedido.length ; i++){
+      prod_id.unshift(pedido[i].detalhes_do_pedidos.map(detalhes => detalhes.produto_id)) 
+
+      total[i] = 0
+
+      for(let j = 0; j < pedido[i].detalhes_do_pedidos.length; j++){
+        total[i] += Number(pedido[i].detalhes_do_pedidos[j].preco) * Number(pedido[i].detalhes_do_pedidos[j].quantidade)
+      }
+      pedido[i].total = total[i]
+
+      produtos = await Produto.findAll({
+        where: {
+          id : {
+            [Op.in] : prod_id
+          }
+        },
+        include: [{
+          model: FotoProduto
+        }]
+      })
+    }
+  }
+
+    res.render('fornecedor/historico.ejs', {pedido,clientes,produtos})
+})
 module.exports = router

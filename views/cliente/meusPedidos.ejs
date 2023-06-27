@@ -29,20 +29,35 @@
               </div>
             </div>
             <% } %>
-            <% }) %>
-            <% } %>
-            <div class="mt-4">
-              <h5>Total: <%=pedido[i].total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })%></h5>
-              <h5>Situação do Pedido: <%=pedido[i].situacao_pedido%></h5>
-            </div>
-            <form action="/cliente/cancelar-pedido" method="post">
-              <input type="hidden" value="">
-              <a href="/cliente/cancelar-pedido/<%=pedido[i].id%>"></a>
-              <button class="btn btn-danger mt-2 mb-3 btn-lg" type="submit">
-                Cancelar Pedido
-              </button>
-            </form>
-        </div>
+        <% }) %>
       <% } %>
+        <% if(pedido[i].situacao_pedido == "Em andamento"){%>
+          <a href="/cliente/confirmar-chegada-pedido/<%=pedido[i].id%>">
+            <button class="btn btn-success mt-2 mb-3 " type="button">
+              Confirmar chegada do pedido
+            </button>
+          </a>
+      </div>
+        <% } else if(pedido[i].situacao_pedido == "pendente"){%>
+          <div class="mt-4">
+            <h5>Total: <%=pedido[i].total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })%></h5>
+            <h5>Situação do Pedido: <%=pedido[i].situacao_pedido%></h5>
+          </div>
+          <a href="/cliente/cancelar-pedido/<%=pedido[i].id%>">
+            <button class="btn btn-danger mt-2 mb-3 btn-lg" type="button">
+              Cancelar Pedido
+            </button>
+          </a>
+      </div>
+      <% } else if (pedido[i].situacao_pedido == "Pedido recusado"){ %>
+        <p class="text-danger mt-2">Seu pedido foi recusado</p>
+      </div>
+      <% } else if (pedido[i].situacao_pedido == "Pedido cancelado"){ %>
+        <p class="text-danger mt-2">Você cancelou este pedido.</p>
+      </div>
+      <% } else { %>
+        <p class="text-success mt-2">Pedido entregue.</p>
+      </div>
+      <% }} %>
   <% } %>
 <%- include('../partials/footer') %>

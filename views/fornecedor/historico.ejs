@@ -1,15 +1,14 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 
-<h1 class="mt-4">Pedidos</h1>
-<a href="/fornecedor/historico"><button class="btn btn-success">Histórico dos pedidos</button></a>
+<h1 class="mt-4">Histórico</h1>
+<a href="/fornecedor/pedidos"><button class="btn btn-success">Seus pedidos</button></a>
 <% if(!pedido[0]) { %>
 
 
 <% } else { %>
     <%for(let i = 0; i < pedido.length; i++) {%>
-      <% if(pedido[i].situacao_pedido == "Pedido recusado") { %>
-        <% } else { %> 
+      <% if(pedido[i].situacao_pedido == "Pedido recusado"||pedido[i].situacao_pedido == "Pedido concluido"||pedido[i].situacao_pedido == "Pedido cancelado") { %>
         <div class="card container mt-4">
             <div class="card-body">
                     <h3>Informações  do cliente</h3>
@@ -46,21 +45,12 @@
                         <% }) %>
                     <% } %>
                     <h5>Total do pedido: <%=pedido[i].total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })%></h5>
-                    <%if(pedido[i].situacao_pedido == "pendente") { %>
-                      <div>
-                        <a href="/fornecedor/aceitar-pedido/<%=pedido[i].id%>">
-                          <button type="button" class="btn btn-success mt-4">Aceitar</button>
-                        </a>
-                        <a href="/fornecedor/recusar-pedido/<%=pedido[i].id%>">
-                          <button type="button" class="btn btn-success mt-4">Recusar</button>
-                        </a>
-                      </div>
-                    <% } else if (pedido[i].situacao_pedido == "Em andamento") { %>
-                      <ul>
-                        <li>Pedido em andamento, o cliente deverá confirmar a entrega</li>
-                      </ul>
-                    <% } else if(pedido[i].situacao_pedido == "Pedido entregue") {%>
-                      <p class="text-success mt-2">Pedido entregue.</p>
+                    <%if(pedido[i].situacao_pedido == "Pedido recusado") { %>
+                      <p class="text-danger mt-2">Você recusou este pedido.</p>
+                    <% } else if (pedido[i].situacao_pedido == "Pedido cancelado") { %>
+                      <p class="text-danger mt-2">O cliente cancelou o pedido.</p>
+                    <% } else {%>
+                      <p class="text-success mt-2">Pedido concluido.</p>
                     <% } %>
             </div>
         </div>

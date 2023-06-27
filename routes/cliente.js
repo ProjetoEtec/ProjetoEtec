@@ -139,7 +139,8 @@ router.get('/meus-pedidos',async (req,res)=>{
     include: [{
         model : detalhesDoPedido,
         required: true
-    }]
+    }],
+    order : [['createdAt',"DESC"]]
   })
   let produtos
   let fornecedor
@@ -179,8 +180,40 @@ router.get('/meus-pedidos',async (req,res)=>{
   res.render('./cliente/meusPedidos',{produtos,pedido,fornecedor})
 })
 
-router.get('/deletar/pedido',(req,res)=>{
-  
+router.get('/cancelar-pedido/:id',(req,res)=>{
+  try {
+    Pedido.update({
+      situacao_pedido: "Pedido cancelado"
+    },{
+      where: {
+        id: req.params.id
+      }
+    })
+    req.flash('success_msg','pedido cancelado com sucesso')
+    req.session.save(()=>{
+      res.redirect('/cliente/meus-pedidos')
+    })
+  } catch (error) {
+    console.log(error)
+  }
 })
+router.get('/confirmar-chegada-pedido/:id',(req,res)=>{
+  try {
+    Pedido.update({
+      situacao_pedido: "Pedido entregue"
+    },{
+      where: {
+        id: req.params.id
+      }
+    })
+    req.flash('success_msg','pedido finalizado com sucesso')
+    req.session.save(()=>{
+      res.redirect('/cliente/meus-pedidos')
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 
 module.exports = router
